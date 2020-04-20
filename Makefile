@@ -14,6 +14,7 @@ SRC     =		main.cpp							\
 				Exception/Exception.cpp				\
 				Exception/ExceptionParser.cpp		\
 				Exception/ExceptionPlazza.cpp		\
+				Reception/Reception.cpp				\
 
 OBJ     =       $(SRC:.cpp=.o)
 

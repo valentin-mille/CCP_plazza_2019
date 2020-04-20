@@ -9,8 +9,7 @@
 
 Parser::Parser()
 {
-}
-
-Parser::~Parser()
-{
+    this->_multiplierCooking = 0;
+    this->_nbCooks = 0;
+    this->_timeRefill = 0;
 }

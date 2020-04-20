@@ -10,7 +10,8 @@
 
 int driver(int ac, char **av)
 {
-    // Arcade arcade(av[1]);
-
+    // Launch Parsing
+    // Launch SHELL
+    // Verify Command
     return (0);
 }
