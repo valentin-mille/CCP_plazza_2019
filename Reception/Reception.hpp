@@ -9,6 +9,7 @@
 #define RECEPTION_HPP
 
 #include <string>
+#include <vector>
 #include "Definitions.hpp"
 
 class Reception {
@@ -19,7 +20,7 @@ class Reception {
         bool isShellActive();
     private:
         bool shellActive;
-        std::string _lastOrder;
+        std::vector<std::string> _lastOrders;
 };
 
 #endif /* !RECEPTION_HPP */
