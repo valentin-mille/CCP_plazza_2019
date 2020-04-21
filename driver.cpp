@@ -10,8 +10,14 @@
 
 int driver(int ac, char **av)
 {
+    bool parsingDone = false;
     // Launch Parsing
-    // Launch SHELL
-    // Verify Command
+    Parser input;
+
+    parsingDone = input.getParams(av);
+    if (parsingDone) {
+        std::cout << "Launch Shell" << std::endl;
+        // Verify Command
+    }
     return (0);
 }

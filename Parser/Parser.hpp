@@ -11,16 +11,16 @@
 #include <string>
 #include <iostream>
 
+#include "../Exception/ExceptionParser.hpp"
+
 class Parser {
     public:
         Parser();
         ~Parser() = default;
-        // get args
-        bool getParams();
+        bool getParams(char **input);
         size_t getMultiplier() const;
         size_t getNbCooks() const;
         size_t getTimeRefill() const;
-        bool verifyCommand();
     private:
         size_t _multiplierCooking;
         size_t _nbCooks;
