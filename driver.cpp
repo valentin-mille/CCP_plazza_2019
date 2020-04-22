@@ -5,8 +5,8 @@
 ** driver.cppp
 */
 
-#include "Launcher/Plazza.hpp"
-#include "Parser/Parser.hpp"
+#include "Plazza.hpp"
+#include "Parser.hpp"
 
 int driver(int ac, char **av)
 {

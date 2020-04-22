@@ -5,16 +5,16 @@
 ** main.cpp
 */
 
-#include "Exception/ExceptionPlazza.hpp"
-#include "Tools/Tools.hpp"
-#include "Launcher/Plazza.hpp"
+#include "ExceptionPlazza.hpp"
+#include "Plazza.hpp"
+#include "Tools.hpp"
 
 int main(int ac, char **av)
 {
     int control = 0;
 
     try {
-        if (ac < 4 || ac > 4) {
+        if (isCommandLineError(ac, av)) {
             displayUsage();
             return (84);
         }

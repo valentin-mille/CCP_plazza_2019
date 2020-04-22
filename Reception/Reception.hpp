@@ -21,6 +21,7 @@ class Reception {
     private:
         bool shellActive;
         std::vector<std::string> _lastOrders;
+        float cookingTime_;
 };
 
 #endif /* !RECEPTION_HPP */

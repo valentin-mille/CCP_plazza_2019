@@ -1,3 +1,10 @@
+# Vim utils
+.clangd
+compile_commands.json
+
+# Unit test binary
+unit_tests
+
 # Prerequisites
 *.d
 

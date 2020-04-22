@@ -11,7 +11,7 @@
 #include <string>
 #include <iostream>
 
-#include "../Exception/ExceptionParser.hpp"
+#include "ExceptionParser.hpp"
 
 class Parser {
     public:

@@ -5,38 +5,45 @@
 ## Makefile Plazza
 ##
 
-CFLAGS  =       -Wall -Wextra -W
+include source.mk
 
-SRC     =		main.cpp							\
-				driver.cpp							\
-				Parser/Parser.cpp					\
-				Tools/Usage.cpp						\
-				Exception/Exception.cpp				\
-				Exception/ExceptionParser.cpp		\
-				Exception/ExceptionPlazza.cpp		\
-				Reception/Reception.cpp				\
+GCV 		= 	gcovr
+GCVNAME 	= 	coverage.html
+GCVFLAGS 	= 	--html-details --html-title coverage
+GCVEXCLUDE 	= 	--exclude tests/ --exclude gcovr/
 
-OBJ     =       $(SRC:.cpp=.o)
+CPPFLAGS	=		$(addprefix -I, $(FLAGS))
 
-NAME    =       plazza
+OBJ     	=       $(SRC:.cpp=.o)
+
+NAME    	=       plazza
 
 all:    $(NAME)
 
 $(NAME):        $(OBJ)
-	g++ -o $(NAME) $(OBJ) $(CFLAGS)
+	$(LD) -o $(NAME) $(OBJ)
+	@echo -e "\033[1;31mCOMPILATION: $(NAME)\033[0m"
+
+tests_run:
+	@make tests_run -C tests/ --no-print-directory
+	@$(GCV) $(GCVEXCLUDE)
+	@$(GCV) -r ./ $(GCVFLAGS) -o $(GCVNAME) $(GCVEXCLUDE)
 
 debug: fclean $(OBJ)
-	gcc -ggdb -o $(NAME) $(SRC)
+	$(LD) -ggdb -o $(NAME) $(SRC)
+	@echo -e "\033[1;31mDEBUGGING: $(NAME)\033[0m"
 
 clean:
-	rm -f $(OBJ)
+	@rm -f $(OBJ)
+	@echo -e "\033[1;31mCLEAN: OBJ\033[0m"
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
+	@echo -e "\033[1;31mFULL CLEAN: $(NAME)\033[0m"
 
 re:	fclean all
 
-auteur:
+author:
 	echo $(USER) > auteur
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re author debug
