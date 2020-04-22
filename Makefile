@@ -9,7 +9,7 @@ include source.mk
 
 GCV 		= 	gcovr
 GCVNAME 	= 	coverage.html
-GCVFLAGS 	= 	--html-details --html-title coverage
+GCVFLAGS 	= 	--html-details --html -o coverage.html
 GCVEXCLUDE 	= 	--exclude tests/ --exclude gcovr/
 
 CPPFLAGS	=		$(addprefix -I, $(FLAGS))
