@@ -39,12 +39,7 @@ jobs:
       - name: BuildTest
         shell: bash
         run: |
-          sudo apt-get install python3 python3-pip python3-setuptools python3-wheel ninja-build
-          pip3 install --user meson
-          git clone --recursive https://github.com/Snaipe/Criterion
-          meson build
-          ninja -C build
-          ninja -C build install
+          sudo apt-get install criterion
           make tests_run
 
   deploy:
