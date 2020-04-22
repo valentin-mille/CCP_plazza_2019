@@ -61,7 +61,6 @@ jobs:
           ref: 'master'
           fetch-depth: '0' # get all history of master
 
-
       #Push on an epitech repository
       - name: Add host git.epitech.eu
         shell: bash
@@ -70,7 +69,7 @@ jobs:
       - name: Set up remote (epitech)
         shell: bash
         run: |
-          git remote add epitech git@git.epitech.eu:valentin.mille@epitech.eu/CCP_plazza_2019/
+          git remote add epitech git@git.epitech.eu:valentin.mille@epitech.eu/CCP_plazza_2019
       - name : Push to repository (epitech)
         shell: bash
         run: |
