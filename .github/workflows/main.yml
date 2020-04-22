@@ -39,7 +39,9 @@ jobs:
       - name: BuildTest
         shell: bash
         run: |
-          sudo apt-get install criterion
+          sudo add-apt-repository ppa:snaipewastaken/ppa
+          sudo apt-get update
+          sudo apt-get install criterion-dev
           make tests_run
 
   deploy:
