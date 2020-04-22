@@ -38,7 +38,12 @@ jobs:
 
       - name: BuildTest
         shell: bash
-        run: make tests_run
+        run: |
+          git clone --recursive https://github.com/Snaipe/Criterion
+          meson build
+          ninja -C build
+          ninja -C build install
+          make tests_run
 
   deploy:
     name: Deploy
