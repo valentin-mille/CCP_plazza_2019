@@ -21,6 +21,7 @@ class Parser {
         size_t getMultiplier() const;
         size_t getNbCooks() const;
         size_t getTimeRefill() const;
+        bool isCommandValid(std::string const &input);
     private:
         size_t _multiplierCooking;
         size_t _nbCooks;
