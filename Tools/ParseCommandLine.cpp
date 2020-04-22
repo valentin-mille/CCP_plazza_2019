@@ -5,7 +5,7 @@
 ** functions to parse command line
 */
 
-#include <stdlib.h>
+#include <cstdlib>
 
 bool isCommandLineError(int ac, char **av)
 {
@@ -15,9 +15,9 @@ bool isCommandLineError(int ac, char **av)
     int timeToReplaceIngr = 0;
 
     if (ac == 4) {
-        cookingTime = atof(av[1]);
-        numberOfCook = atoi(av[2]);
-        timeToReplaceIngr = atoi(av[3]);
+        cookingTime = std::atof(av[1]);
+        numberOfCook = std::atoi(av[2]);
+        timeToReplaceIngr = std::atoi(av[3]);
         if (cookingTime >= 0 && numberOfCook > 0 && timeToReplaceIngr >= 0) {
            error = false; 
         }

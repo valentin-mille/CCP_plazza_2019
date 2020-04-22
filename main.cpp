@@ -8,6 +8,7 @@
 #include "ExceptionPlazza.hpp"
 #include "Plazza.hpp"
 #include "Tools.hpp"
+#include <exception>
 
 int main(int ac, char **av)
 {
@@ -19,9 +20,15 @@ int main(int ac, char **av)
             return (84);
         }
         control = driver(ac, av);
-    } catch (Exception &e) {
+    } catch (Exception const &e) {
         std::cerr << e.what() << std::endl;
         return (84);
+    } catch (std::exception const &e) {
+        std::cerr << e.what() << std::endl;
+        return 84;
+    } catch (...) {
+        std::cerr << "==> Fatal error" << std::endl;
+        return 84;
     }
     return (control);
 }
