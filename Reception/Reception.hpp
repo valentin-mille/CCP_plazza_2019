@@ -16,10 +16,11 @@ class Reception {
     public:
         Reception();
         ~Reception() = default;
+        bool launchShell();
+        bool getShellActivity();
         bool isOrderValid();
-        bool isShellActive();
     private:
-        bool shellActive;
+        bool _shellActive;
         std::vector<std::string> _lastOrders;
         float cookingTime_;
 };
