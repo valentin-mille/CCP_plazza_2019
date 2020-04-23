@@ -19,13 +19,13 @@ FLAGS		=		Tools/							\
 
 SRC     	=		main.cpp												\
 					driver.cpp												\
-					Parser/Parser.cpp										\
-					Tools/Usage.cpp											\
-					Tools/ParseCommandLine.cpp 								\
-					Exception/Exception.cpp									\
-					Exception/ExceptionParser.cpp							\
-					Exception/ExceptionPlazza.cpp							\
-					Reception/Reception.cpp									\
+					sources/Parser/Parser.cpp								\
+					sources/Tools/Usage.cpp									\
+					sources/Tools/ParseCommandLine.cpp 						\
+					sources/Exception/Exception.cpp							\
+					sources/Exception/ExceptionParser.cpp					\
+					sources/Exception/ExceptionPlazza.cpp					\
+					sources/Reception/Reception.cpp							\
 
 TEST 		=		testsParseCommandLine.cpp 								\
 
