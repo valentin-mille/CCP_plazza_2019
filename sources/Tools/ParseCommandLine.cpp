@@ -19,7 +19,7 @@ bool isCommandLineError(int ac, char **av)
         numberOfCook = std::atoi(av[2]);
         timeToReplaceIngr = std::atoi(av[3]);
         if (cookingTime >= 0 && numberOfCook > 0 && timeToReplaceIngr >= 0) {
-           error = false; 
+           error = false;
         }
     }
     return error;
