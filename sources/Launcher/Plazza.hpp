@@ -11,15 +11,6 @@
 #include <string>
 #include <iostream>
 
-// class Plazza {
-//     public:
-//         Plazza();
-//         ~Plazza();
-
-//     protected:
-//     private:
-// };
-
-int driver(int ac, char **av);
+int driver(char **av);
 
 #endif /* !PLAZZA_HPP */
