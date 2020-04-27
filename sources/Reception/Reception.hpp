@@ -18,11 +18,13 @@ class Reception {
         ~Reception() = default;
         bool launchShell();
         bool getShellActivity();
-        bool isOrderValid();
+        void parseOrder(std::string const &order);
     private:
         bool _shellActive;
         std::vector<std::string> _lastOrders;
         float cookingTime_;
 };
+
+std::vector<std::vector<std::string>> CleanOrder(std::string const &OrderInput);
 
 #endif /* !RECEPTION_HPP */
