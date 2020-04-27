@@ -18,7 +18,6 @@ int driver(char **av)
     parsingDone = input.getParams(av);
     if (parsingDone) {
         reception.launchShell();
-        // Verify Command
     }
     return (0);
 }
