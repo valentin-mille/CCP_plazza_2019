@@ -1,3 +1,6 @@
+# Personnal folder
+__IGNORE__/
+
 # Vim utils
 .clangd
 compile_commands.json

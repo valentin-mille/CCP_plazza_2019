@@ -16,6 +16,11 @@ FLAGS		=		Tools/							\
 					Launcher/ 						\
 					Parser/ 						\
 					Exception/ 						\
+					Pizza/							\
+					IPC/							\
+					Cooks/ 							\
+					Kitchens/ 						\
+
 
 SRC     	=		main.cpp												\
 					driver.cpp												\
@@ -26,6 +31,10 @@ SRC     	=		main.cpp												\
 					sources/Exception/ExceptionParser.cpp					\
 					sources/Exception/ExceptionPlazza.cpp					\
 					sources/Reception/Reception.cpp							\
+					sources/Pizza/Pizza.cpp 								\
+					sources/IPC/InterProcessCom.cpp							\
+					sources/Kitchens/Kitchens.cpp 							\
+					sources/Cooks/Cooks.cpp									\
 
 TEST 		=		testsParseCommandLine.cpp 								\
 

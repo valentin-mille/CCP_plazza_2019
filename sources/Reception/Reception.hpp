@@ -9,8 +9,14 @@
 #define RECEPTION_HPP
 
 #include <string>
+#include <utility>
 #include <vector>
+#include <queue>
+
 #include "Definitions.hpp"
+#include "Pizza.hpp"
+#include "Kitchens.hpp"
+#include "InterProcessCom.hpp"
 
 class Reception {
     public:
@@ -19,10 +25,16 @@ class Reception {
         bool launchShell();
         bool getShellActivity();
         bool isOrderValid();
+
+
+        void displayKitchensStatus(); // [TODO] add the Kitchens
     private:
-        bool _shellActive;
-        std::vector<std::string> _lastOrders;
+        bool shellActive_;
+        std::vector<InterProcessCom> streamCom_;
+        std::vector<Kitchens> kitchens_;
+        std::vector<std::string> lastOrders_;
         float cookingTime_;
+        std::queue<Pizza> pizzas_;
 };
 
 #endif /* !RECEPTION_HPP */

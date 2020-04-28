@@ -11,7 +11,7 @@
 
 Reception::Reception()
 {
-    this->_shellActive = false;
+    this->shellActive_ = false;
 }
 
 bool Reception::launchShell()
@@ -19,7 +19,7 @@ bool Reception::launchShell()
     bool isRunning = true;
     std::string input;
 
-    this->_shellActive = true;
+    this->shellActive_ = true;
     while (isRunning) {
         std::cout << "> ";
         std::getline(std::cin, input);
@@ -35,5 +35,10 @@ bool Reception::launchShell()
 
 bool Reception::getShellActivity()
 {
-    return (this->_shellActive);
+    return (this->shellActive_);
+}
+
+void Reception::displayKitchensStatus()
+{
+   // print the number the current occupancy of the cooks, as well as theirs stocks of ingredients 
 }
