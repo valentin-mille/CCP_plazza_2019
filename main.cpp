@@ -19,7 +19,7 @@ int main(int ac, char **av)
             displayUsage();
             return (84);
         }
-        control = driver(ac, av);
+        control = driver(av);
     } catch (Exception const &e) {
         std::cerr << e.what() << std::endl;
         return (84);

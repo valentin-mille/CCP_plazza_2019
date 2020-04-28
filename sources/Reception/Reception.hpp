@@ -26,8 +26,8 @@ class Reception {
         bool getShellActivity();
         bool isOrderValid();
 
-
         void displayKitchensStatus(); // [TODO] add the Kitchens
+        void parseOrder(std::string const &order);
     private:
         bool shellActive_;
         std::vector<InterProcessCom> streamCom_;
@@ -36,5 +36,7 @@ class Reception {
         float cookingTime_;
         std::queue<Pizza> pizzas_;
 };
+
+std::vector<std::vector<std::string>> CleanOrder(std::string const &OrderInput);
 
 #endif /* !RECEPTION_HPP */

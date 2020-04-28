@@ -41,8 +41,3 @@ size_t Parser::getTimeRefill() const
 {
     return (this->_timeRefill);
 }
-
-bool Parser::isCommandValid(std::string const &input)
-{
-    return (true);
-}

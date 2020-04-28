@@ -6,12 +6,25 @@
 */
 
 #include <iostream>
+#include <cstring>
 
 #include "Reception.hpp"
 
 Reception::Reception()
 {
     this->shellActive_ = false;
+}
+
+void Reception::parseOrder(std::string const &order)
+{
+    std::vector<std::vector<std::string>> Orders;
+
+    Orders = CleanOrder(order);
+    if (Orders.empty()) {
+        std::cerr << "Error: Invalid Order" << std::endl;
+        return;
+    }
+    std::cout << "NB ORDERS : " << Orders.size() << std::endl;
 }
 
 bool Reception::launchShell()
@@ -28,7 +41,7 @@ bool Reception::launchShell()
             isRunning = false;
             break;
         }
-        std::cout << input << std::endl;
+        parseOrder(input);
     }
     return (true);
 }
