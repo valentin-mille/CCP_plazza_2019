@@ -9,6 +9,7 @@
 #define INTERPROCESSCOM_HPP_
 
 #include <string>
+#include <mutex>
 
 class InterProcessCom {
 

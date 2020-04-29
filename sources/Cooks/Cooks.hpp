@@ -14,7 +14,7 @@ class Cooks {
         ~Cooks();
 
         bool isOccupied() const;
-
+        void setCookStatus(bool status);
     private:
         bool occupied_;
 

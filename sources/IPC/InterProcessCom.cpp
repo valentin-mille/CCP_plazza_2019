@@ -8,11 +8,14 @@
 #include <algorithm>
 #include <cstdio>
 #include <iostream>
+#include <mutex>
 #include <stdio.h>
 #include <string>
 #include <unistd.h>
 
 #include "InterProcessCom.hpp"
+
+std::mutex mutex;
 
 InterProcessCom::InterProcessCom()
 {
@@ -62,19 +65,23 @@ std::string InterProcessCom::readBuffer()
     return "";
 }
 
-
 void InterProcessCom::writeInformations(const std::string &infos)
 {
+    // Lock the program if a mutex is already blocked
+    std::lock_guard<std::mutex> lock(mutex);
     std::string finalStr;
 
     finalStr += infos + "\n";
-    std::cout << "Final str before sending: \"" << finalStr << "\"" << std::endl;
+    std::cout << "Final str before sending: \"" << finalStr << "\""
+              << std::endl;
     // Send the size of the data and data
     write(this->fdWrite_, finalStr.c_str(), finalStr.size());
+    // release the locked mutex automatically at the end of the scope
 }
 
 void InterProcessCom::readInformations()
 {
+    std::lock_guard<std::mutex> lock(mutex);
     std::string buffer = this->readBuffer();
 
     std::cout << "result: \"" << buffer << "\"" << std::endl;

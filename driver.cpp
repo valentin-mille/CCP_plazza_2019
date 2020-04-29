@@ -13,10 +13,10 @@ int driver(char **av)
 {
     bool parsingDone = false;
     Parser input;
-    Reception reception;
 
     parsingDone = input.getParams(av);
     if (parsingDone) {
+        Reception reception(input.getNbCooks());
         reception.launchShell();
     }
     return (0);

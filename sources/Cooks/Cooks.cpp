@@ -9,6 +9,7 @@
 
 Cooks::Cooks()
 {
+    this->occupied_ = false;
 }
 
 Cooks::~Cooks()
@@ -18,4 +19,9 @@ Cooks::~Cooks()
 bool Cooks::isOccupied() const
 {
     return this->occupied_;
+}
+
+void Cooks::setCookStatus(bool status)
+{
+    this->occupied_ = status;
 }
