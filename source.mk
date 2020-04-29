@@ -28,6 +28,7 @@ SRC     	=		main.cpp												\
 					sources/Tools/Usage.cpp									\
 					sources/Tools/ParseCommandLine.cpp 						\
 					sources/Tools/CleanOrder.cpp							\
+					sources/Tools/FillQueueOrder.cpp						\
 					sources/Exception/Exception.cpp							\
 					sources/Exception/ExceptionParser.cpp					\
 					sources/Exception/ExceptionPlazza.cpp					\

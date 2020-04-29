@@ -10,6 +10,7 @@
 #include <cstring>
 #include <iostream>
 #include <unistd.h>
+#include <queue>
 
 #include "InterProcessCom.hpp"
 #include "Kitchens.hpp"
@@ -23,14 +24,15 @@ Reception::Reception(int nbOfCooks) : nbOfCooks_(nbOfCooks)
 
 void Reception::parseOrder(std::string const &order)
 {
-    std::vector<std::vector<std::string>> OrdersVect;
+    std::vector<std::string> OrdersVect;
+    std::queue <std::string> QueueOrder;
 
     OrdersVect = CleanOrder(order);
     if (OrdersVect.empty()) {
         std::cerr << "Error: Invalid Order" << std::endl;
         return;
     }
-    std::cout << "NB ORDERS : " << OrdersVect.size() << std::endl;
+    QueueOrder = FillQueueOrder(OrdersVect);
 }
 
 bool Reception::launchShell()

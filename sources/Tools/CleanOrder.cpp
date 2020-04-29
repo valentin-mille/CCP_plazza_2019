@@ -70,21 +70,67 @@ std::vector<std::string> tokeniseString(std::string const &order)
     return (tokens);
 }
 
-std::vector<std::vector<std::string>> CleanOrder(std::string const &OrderInput)
+std::string createStringOrder(std::vector<std::string> &input)
+{
+    size_t i = 0;
+    size_t sizeInput = input.size();
+    std::string tmp;
+
+    while (i < sizeInput) {
+        std::cout << input.at(i) << std::endl;
+        if (input.at(i) != " ") {
+            tmp.append(input.at(i));
+            tmp.append(" ");
+        }
+        i++;
+    }
+    return (tmp);
+}
+
+std::vector <std::string> handleMultipleCommands(std::string const &OrderInput, size_t nbOrder)
+{
+    std::vector<std::vector<std::string>> OrderTokens;
+    std::string intermediate;
+    std::stringstream check1(OrderInput);
+    std::vector <std::string> tmp;
+    std::vector <std::string> tmp2;
+    std::vector<std::string> result;
+    std::string strClean;
+    size_t i = 0;
+
+    while(getline(check1, intermediate, ';'))
+    {
+        if (intermediate.at(0) == ' ')
+            intermediate.erase(0, 1);
+        tmp2 = tokeniseString(intermediate);
+        OrderTokens.push_back(tmp2);
+    }
+    while (i < nbOrder) {
+        if (isOrderValid(OrderTokens.at(i))) {
+            strClean = createStringOrder(OrderTokens.at(i));
+            result.push_back(strClean);
+        }
+        i++;
+    }
+    return (result);
+}
+
+std::vector<std::string> CleanOrder(std::string const &OrderInput)
 {
     size_t nbOrder = findNbOrder(OrderInput);
     std::vector <std::string> tmp;
-    std::vector<std::vector<std::string>> result;
+    std::vector<std::string> result;
+    std::string strOrder;
 
     if (nbOrder == 1) {
         tmp = tokeniseString(OrderInput);
-        if (isOrderValid(tmp))
-            result.push_back(tmp);
-        return (result);
-    }
-    while (nbOrder > 0) {
-        tmp = tokeniseString(OrderInput);
-        nbOrder--;
+        if (isOrderValid(tmp)) {
+            strOrder = createStringOrder(tmp);
+            result.push_back(strOrder);
+        }
+    } else {
+        result = handleMultipleCommands(OrderInput, nbOrder);
+        std::cout << result.at(0) << std::endl;
     }
     return (result);
 }
