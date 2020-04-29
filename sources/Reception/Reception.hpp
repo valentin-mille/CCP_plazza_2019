@@ -17,6 +17,7 @@
 #include "Pizza.hpp"
 #include "Kitchens.hpp"
 #include "InterProcessCom.hpp"
+#include "Tools.hpp"
 
 class Reception {
     public:
@@ -39,7 +40,5 @@ class Reception {
         size_t nbOfCooks_;
         std::queue<Pizza> pizzas_;
 };
-
-std::vector<std::vector<std::string>> CleanOrder(std::string const &OrderInput);
 
 #endif /* !RECEPTION_HPP */

@@ -23,14 +23,14 @@ Reception::Reception(int nbOfCooks) : nbOfCooks_(nbOfCooks)
 
 void Reception::parseOrder(std::string const &order)
 {
-    std::vector<std::vector<std::string>> Orders;
+    std::vector<std::vector<std::string>> OrdersVect;
 
-    Orders = CleanOrder(order);
-    if (Orders.empty()) {
+    OrdersVect = CleanOrder(order);
+    if (OrdersVect.empty()) {
         std::cerr << "Error: Invalid Order" << std::endl;
         return;
     }
-    std::cout << "NB ORDERS : " << Orders.size() << std::endl;
+    std::cout << "NB ORDERS : " << OrdersVect.size() << std::endl;
 }
 
 bool Reception::launchShell()
