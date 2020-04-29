@@ -77,7 +77,6 @@ std::string createStringOrder(std::vector<std::string> &input)
     std::string tmp;
 
     while (i < sizeInput) {
-        std::cout << input.at(i) << std::endl;
         if (input.at(i) != " ") {
             tmp.append(input.at(i));
             tmp.append(" ");
@@ -130,7 +129,6 @@ std::vector<std::string> CleanOrder(std::string const &OrderInput)
         }
     } else {
         result = handleMultipleCommands(OrderInput, nbOrder);
-        std::cout << result.at(0) << std::endl;
     }
     return (result);
 }
