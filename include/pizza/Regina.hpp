@@ -2,26 +2,28 @@
 ** EPITECH PROJECT, 2019
 ** CPP_plazza_2019
 ** File description:
-** Regina.hpp
+** ReginaPizza.hpp
 */
 
 #pragma once
 
 #include<APizza.hpp>
 
-class Regina
+class ReginaPizza : public APizza
 {
 private:
 public:
-    Regina();
-    ~Regina();
+    ReginaPizza(PizzaSize);
+    ~ReginaPizza();
 };
 
-Regina::Regina()
+ReginaPizza::ReginaPizza(PizzaSize pizzaSize): APizza(pizzaSize)
 {
+    _type = PizzaType::Regina;
+    _ingredients.push_back(Ingredients::DOE);
+    _ingredients.push_back(Ingredients::GRUYERE);
 }
 
-Regina::~Regina()
+ReginaPizza::~ReginaPizza()
 {
 }
-
