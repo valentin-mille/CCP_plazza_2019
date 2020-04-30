@@ -32,7 +32,7 @@ size_t Parser::getNbCooks() const
     return (this->_nbCooks);
 }
 
-size_t Parser::getMultiplier() const
+float Parser::getMultiplier() const
 {
     return (this->_multiplierCooking);
 }

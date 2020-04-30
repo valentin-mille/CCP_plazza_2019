@@ -9,7 +9,7 @@ CC			=		g++
 
 LD			=		$(CC)
 
-CXXFLAGS  	=       -Wall -Wextra -W -std=c++14		\
+CXXFLAGS  	=       -Wall -Wextra -W -std=c++17		\
 
 FLAGS		=		Tools/							\
 					Reception/ 						\
@@ -20,25 +20,27 @@ FLAGS		=		Tools/							\
 					IPC/							\
 					Cooks/ 							\
 					Kitchens/ 						\
+					Ingredients/ 					\
+					Clock/ 							\
 
 
-SRC     	=		main.cpp												\
-					driver.cpp												\
-					sources/Parser/Parser.cpp								\
-					sources/Tools/Usage.cpp									\
-					sources/Tools/ParseCommandLine.cpp 						\
-					sources/Tools/CleanOrder.cpp							\
-					sources/Tools/FillQueueOrder.cpp						\
-					sources/Exception/Exception.cpp							\
-					sources/Exception/ExceptionParser.cpp					\
-					sources/Exception/ExceptionPlazza.cpp					\
-					sources/Reception/Reception.cpp							\
-					sources/Pizza/Pizza.cpp 								\
-					sources/IPC/InterProcessCom.cpp							\
-					sources/Kitchens/Kitchens.cpp 							\
-					sources/Cooks/Cooks.cpp									\
+SRC     	=		main.cpp											\
+					driver.cpp											\
+					src/Clock/clock.cpp 											\
+					src/Parser/Parser.cpp								\
+					src/Tools/Usage.cpp									\
+					src/Tools/ParseCommandLine.cpp 						\
+					src/Tools/CleanOrder.cpp							\
+					src/Tools/FillQueueOrder.cpp						\
+					src/Exception/Exception.cpp							\
+					src/Exception/ExceptionParser.cpp					\
+					src/Exception/ExceptionPlazza.cpp					\
+					src/Reception/Reception.cpp							\
+					src/IPC/InterProcessCom.cpp							\
+					src/Kitchens/Kitchens.cpp 							\
+					src/Cooks/Cooks.cpp									\
 
 TEST 		=		testsParseCommandLine.cpp 								\
 
 SRC_TEST	=		$(addprefix ../, $(filter-out main.cpp, $(SRC)))		\
-					$(addprefix sources/, $(TEST))
+					$(addprefix src/, $(TEST))

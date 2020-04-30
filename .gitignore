@@ -1,5 +1,6 @@
 # Personnal folder
 __IGNORE__/
+.vscode/
 
 # Vim utils
 .clangd

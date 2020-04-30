@@ -9,15 +9,15 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <unistd.h>
 #include <queue>
+#include <unistd.h>
 
 #include "InterProcessCom.hpp"
 #include "Kitchens.hpp"
-#include "Pizza.hpp"
 #include "Reception.hpp"
 
-Reception::Reception(int nbOfCooks) : nbOfCooks_(nbOfCooks)
+Reception::Reception(float multiplier, int nbOfCooks, int deliveryTime)
+    : multiplier_(multiplier), nbOfCooks_(nbOfCooks), deliveryTime_(deliveryTime)
 {
     this->shellActive_ = false;
 }
@@ -25,7 +25,7 @@ Reception::Reception(int nbOfCooks) : nbOfCooks_(nbOfCooks)
 void Reception::parseOrder(std::string const &order)
 {
     std::vector<std::string> OrdersVect;
-    std::queue <std::string> QueueOrder;
+    std::queue<std::string> QueueOrder;
 
     OrdersVect = CleanOrder(order);
     if (OrdersVect.empty()) {
@@ -66,11 +66,14 @@ void Reception::displayKitchensStatus()
     //
 }
 
-int Reception::createNewKitchenProcess(const Pizza &toPrepare)
+int Reception::createNewKitchenProcess(const APizza &toPrepare)
 {
     InterProcessCom currentStream;
     pid_t pid;
-    Kitchens newKitchen(this->nbOfCooks_, currentStream);
+    Kitchens newKitchen(this->multiplier_,
+                        this->nbOfCooks_,
+                        this->deliveryTime_,
+                        currentStream);
 
     pid = fork();
     if (pid == 0) {
@@ -89,7 +92,7 @@ int Reception::createNewKitchenProcess(const Pizza &toPrepare)
 
 int Reception::sendPizzaToKitchens()
 {
-    Pizza currentPizza = this->pizzas_.front();
+    APizza currentPizza = this->pizzas_.front();
     bool taskDone = false;
 
     for (auto &kitchen : this->kitchensProcess_) {

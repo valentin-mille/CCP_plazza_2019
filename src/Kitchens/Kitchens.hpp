@@ -10,19 +10,22 @@
 
 #include <algorithm>
 #include <csignal>
-#include <vector>
-#include <unordered_map>
 #include <memory>
+#include <unordered_map>
+#include <vector>
 
+#include "APizza.hpp"
 #include "Cooks.hpp"
-#include "Pizza.hpp"
+#include "Ingredients.hpp"
 #include "InterProcessCom.hpp"
+#include "clock.hpp"
 
 class Kitchens
 {
 
+  public:
     enum Ingredients {
-        tomatoe=0,
+        tomatoe = 0,
         doe,
         gruyere,
         ham,
@@ -32,24 +35,33 @@ class Kitchens
         goatCheese,
         chiefLove,
         MaxIngre,
+        INGREDIENTS_COUNT,
     };
 
-  public:
-    Kitchens(int nbOfCooks, const InterProcessCom &pipeCom);
+    Kitchens(float multiplier,
+            int nbCooks,
+            int deliveryTime,
+            const InterProcessCom &pipeCom);
     ~Kitchens();
+
+    void update();
+    void printStock();
 
     void resetIngredients();
     void regenerateOneOfEachIngredients();
     bool isCookAvailable() const;
-    bool cookPizza(const Pizza &toPrepare);
-    int runCookingProcess(const Pizza &pizza);
+    bool cookPizza(const APizza &toPrepare);
+    int runCookingProcess(const APizza &pizza);
 
   private:
     // Add the clock
-    size_t nbOfCooks_;
+    int nbCooks_;
+    float multiplier_;
+    Clock _refoundClock;
+    int deliveryTime_;
     const InterProcessCom &pipeCom_;
     std::vector<Cooks> cooks_;
-    std::unordered_map<std::size_t, int> available_ingr_;
+    std::array<int, Ingredients::INGREDIENTS_COUNT> stock_;
     float timeToReplaceIngredients_;
 };
 

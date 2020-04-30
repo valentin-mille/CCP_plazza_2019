@@ -5,22 +5,46 @@
 ** kitchens class implementation
 */
 
-#include "Kitchens.hpp"
-#include "Cooks.hpp"
-#include "Pizza.hpp"
 #include <algorithm>
 #include <cstdlib>
 
-Kitchens::Kitchens(int nbOfCooks, const InterProcessCom &pipeCom)
-    : pipeCom_(pipeCom)
+#include "Kitchens.hpp"
+#include "Cooks.hpp"
+
+Kitchens::Kitchens(float multiplier, int nbCooks, int deliveryTime, const InterProcessCom &pipeCom)
+    : pipeCom_(pipeCom), multiplier_(multiplier), nbCooks_(nbCooks), deliveryTime_(deliveryTime)
 {
-    this->nbOfCooks_ = nbOfCooks;
+    _refoundClock.reset();
+    for (int i = 0; i < nbCooks_; i++)
+        cooks_.push_back(Cook{});
+    for (auto &ingredient : stock_)
+        ingredient = 5;
+    this->nbCooks_ = nbCooks;
     resetIngredients();
 }
 
 Kitchens::~Kitchens()
 {
 }
+
+void Kitchen::update()
+{
+    if (_refoundClock.getElapsedTime() >= _deliveryTime) {
+        for (auto &ingredient : _stock)
+            ingredient += 1;
+        _refoundClock.reset();
+        printStock();
+    }
+}
+
+void Kitchen::printStock()
+{
+    std::cout << "-------------------STOCK-----------------------" << std::endl;
+    for (auto &ingredient : _stock)
+        std::cout << ingredient << std::endl;
+    std::cout << "-----------------------------------------------" << std::endl;
+}
+
 
 void Kitchens::resetIngredients()
 {
@@ -46,7 +70,7 @@ bool Kitchens::isCookAvailable() const
     return false;
 }
 
-bool Kitchens::cookPizza(const Pizza &toPrepare)
+bool Kitchens::cookPizza(const APizza &toPrepare)
 {
     for (auto &cook : this->cooks_) {
         if (cook.isOccupied() == false) {
@@ -58,7 +82,7 @@ bool Kitchens::cookPizza(const Pizza &toPrepare)
     return false;
 }
 
-int Kitchens::runCookingProcess(const Pizza &pizza)
+int Kitchens::runCookingProcess(const APizza &pizza)
 {
     // Add the clock inside the loop condition
     while (1) {

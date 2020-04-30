@@ -50,7 +50,7 @@ std::string InterProcessCom::readBuffer()
 
     while (process) {
         read(this->fdRead_, buf, BUFFER_SIZE);
-        buf[BUFFER_SIZE] = '\0'; // There is a warning but no errors
+        buf[BUFFER_SIZE] = '\0';
         end = buf + sizeof(buf) / sizeof(buf[0]);
         finder = std::find(buf, end, '\n');
         if (finder != std::end(buf)) {

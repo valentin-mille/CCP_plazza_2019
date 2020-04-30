@@ -16,7 +16,7 @@ int driver(char **av)
 
     parsingDone = input.getParams(av);
     if (parsingDone) {
-        Reception reception(input.getNbCooks());
+        Reception reception(input.getMultiplier(), input.getNbCooks(), input.getTimeRefill());
         reception.launchShell();
     }
     return (0);

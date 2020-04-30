@@ -18,7 +18,7 @@ class Parser {
         Parser();
         ~Parser() = default;
         bool getParams(char **input);
-        size_t getMultiplier() const;
+        float getMultiplier() const;
         size_t getNbCooks() const;
         size_t getTimeRefill() const;
     private:

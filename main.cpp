@@ -5,10 +5,11 @@
 ** main.cpp
 */
 
+#include <exception>
+
 #include "ExceptionPlazza.hpp"
 #include "Plazza.hpp"
 #include "Tools.hpp"
-#include <exception>
 
 int main(int ac, char **av)
 {

@@ -13,15 +13,15 @@
 #include <vector>
 #include <queue>
 
-#include "Definitions.hpp"
-#include "Pizza.hpp"
+#include "IPizza.hpp"
+#include "APizza.hpp"
 #include "Kitchens.hpp"
 #include "InterProcessCom.hpp"
 #include "Tools.hpp"
 
 class Reception {
     public:
-        Reception(int nbOfCooks);
+        Reception(float multiplier, int nbOfCooks, int deliveryTime_);
         ~Reception() = default;
         bool launchShell();
         bool getShellActivity();
@@ -29,16 +29,17 @@ class Reception {
 
         void displayKitchensStatus(); // [TODO] add the Kitchens
         void parseOrder(std::string const &order);
-        int createNewKitchenProcess(const Pizza &toPrepare);
+        int createNewKitchenProcess(const APizza &toPrepare);
         int sendPizzaToKitchens();
     private:
         bool shellActive_;
         std::vector<InterProcessCom> streamCom_; // Mutex is not copiable
         std::vector<Kitchens> kitchensProcess_;
         std::vector<std::string> lastOrders_;
-        float cookingTime_;
-        size_t nbOfCooks_;
-        std::queue<Pizza> pizzas_;
+        float multiplier_;
+        int nbOfCooks_;
+        int deliveryTime_;
+        std::queue<APizza> pizzas_;
 };
 
 #endif /* !RECEPTION_HPP */
