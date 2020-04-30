@@ -33,10 +33,10 @@ public:
     ~IPizza();
 };
 
-IPizza::IPizza(/* args */)
-{
-}
+// IPizza::IPizza(/* args */)
+// {
+// }
 
-IPizza::~IPizza()
-{
-}
+// IPizza::~IPizza()
+// {
+// }

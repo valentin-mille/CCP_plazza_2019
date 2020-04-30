@@ -17,7 +17,7 @@ Kitchens::Kitchens(float multiplier, int nbCooks, int deliveryTime, const InterP
 {
     _refoundClock.reset();
     for (int i = 0; i < nbCooks_; i++)
-        cooks_.push_back(Cook{});
+        cooks_.push_back(Cooks{});
     for (auto &ingredient : stock_)
         ingredient = 5;
     this->nbCooks_ = nbCooks;
