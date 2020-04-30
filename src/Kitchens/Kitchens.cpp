@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cstdlib>
+#include <iostream>
 
 #include "Kitchens.hpp"
 #include "Cooks.hpp"
@@ -27,20 +28,20 @@ Kitchens::~Kitchens()
 {
 }
 
-void Kitchen::update()
+void Kitchens::update()
 {
-    if (_refoundClock.getElapsedTime() >= _deliveryTime) {
-        for (auto &ingredient : _stock)
+    if (_refoundClock.getElapsedTime() >= deliveryTime_) {
+        for (auto &ingredient : stock_)
             ingredient += 1;
         _refoundClock.reset();
         printStock();
     }
 }
 
-void Kitchen::printStock()
+void Kitchens::printStock()
 {
     std::cout << "-------------------STOCK-----------------------" << std::endl;
-    for (auto &ingredient : _stock)
+    for (auto &ingredient : stock_)
         std::cout << ingredient << std::endl;
     std::cout << "-----------------------------------------------" << std::endl;
 }
@@ -49,14 +50,14 @@ void Kitchen::printStock()
 void Kitchens::resetIngredients()
 {
     for (size_t i = 0; i < MaxIngre; ++i) {
-        this->available_ingr_[i] = 5;
+        this->stock_[i] = 5;
     }
 }
 
 void Kitchens::regenerateOneOfEachIngredients()
 {
     for (size_t i = 0; i < MaxIngre; ++i) {
-        this->available_ingr_[i] += 1;
+        this->stock_[i] += 1;
     }
 }
 
