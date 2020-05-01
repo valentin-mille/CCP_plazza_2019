@@ -9,11 +9,18 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "Kitchens.hpp"
 #include "Cooks.hpp"
+#include "Kitchens.hpp"
 
-Kitchens::Kitchens(float multiplier, int nbCooks, int deliveryTime, const InterProcessCom &pipeCom)
-    : pipeCom_(pipeCom), multiplier_(multiplier), nbCooks_(nbCooks), deliveryTime_(deliveryTime)
+Kitchens::Kitchens(float multiplier,
+                   int nbCooks,
+                   int deliveryTime,
+                   const InterProcessCom &pipeCom)
+    : pipeCom_(pipeCom),
+      multiplier_(multiplier),
+      nbCooks_(nbCooks),
+      deliveryTime_(deliveryTime),
+      _refoundClock()
 {
     _refoundClock.reset();
     for (int i = 0; i < nbCooks_; i++)
@@ -45,7 +52,6 @@ void Kitchens::printStock()
         std::cout << ingredient << std::endl;
     std::cout << "-----------------------------------------------" << std::endl;
 }
-
 
 void Kitchens::resetIngredients()
 {
@@ -83,14 +89,15 @@ bool Kitchens::cookPizza(const APizza &toPrepare)
     return false;
 }
 
-int Kitchens::runCookingProcess(const APizza &pizza)
+int Kitchens::runCookingProcess(const std::string &pizza)
 {
+    // Call the serialized operator to unpack the string into pizza
     // Add the clock inside the loop condition
     while (1) {
-        if (cookPizza(pizza) == false) {
+        //if (cookPizza(pizza) == false) {
             // Increment clock here
-        } else {
+        //} else {
             // reset the clock here
-        }
+        //}
     }
 }

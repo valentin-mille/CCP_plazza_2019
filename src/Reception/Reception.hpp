@@ -13,7 +13,6 @@
 #include <vector>
 #include <queue>
 
-#include "IPizza.hpp"
 #include "APizza.hpp"
 #include "Kitchens.hpp"
 #include "InterProcessCom.hpp"
@@ -28,8 +27,8 @@ class Reception {
         bool isOrderValid();
 
         void displayKitchensStatus(); // [TODO] add the Kitchens
-        void parseOrder(std::string const &order);
-        int createNewKitchenProcess(const APizza &toPrepare);
+        std::queue<std::string> parseOrder(std::string const &order);
+        int createNewKitchenProcess(const std::string &toPrepare);
         int sendPizzaToKitchens();
     private:
         std::vector<InterProcessCom> streamCom_; // Mutex is not copiable
@@ -38,8 +37,7 @@ class Reception {
         float multiplier_;
         int nbOfCooks_;
         int deliveryTime_;
-        std::queue<std::String> pizzas_;
-        size_t nbKitchens_;
+        std::queue<std::string> pizzas_;
         bool shellActive_;
 };
 

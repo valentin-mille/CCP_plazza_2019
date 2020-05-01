@@ -51,19 +51,18 @@ class Kitchens
     void regenerateOneOfEachIngredients();
     bool isCookAvailable() const;
     bool cookPizza(const APizza &toPrepare);
-    int runCookingProcess(const APizza &pizza);
+    int runCookingProcess(const std::string &pizza);
 
   private:
     // Add the clock
-    int nbCooks_;
-    float multiplier_;
-    Clock _refoundClock;
-    int deliveryTime_;
     const InterProcessCom &pipeCom_;
+    float multiplier_;
+    int nbCooks_;
+    int deliveryTime_;
     std::vector<Cooks> cooks_;
+    Clock _refoundClock;
     std::array<int, Ingredients::INGREDIENTS_COUNT> stock_;
     float timeToReplaceIngredients_;
-    size_t id_;
 };
 
 #endif

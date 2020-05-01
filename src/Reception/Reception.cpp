@@ -21,12 +21,11 @@ Reception::Reception(float multiplier, int nbOfCooks, int deliveryTime)
     : multiplier_(multiplier),
       nbOfCooks_(nbOfCooks),
       deliveryTime_(deliveryTime),
-      nbKitchens_(0),
       shellActive_(false)
 {
 }
 
-void Reception::parseOrder(std::string const &order)
+std::queue<std::string> Reception::parseOrder(std::string const &order)
 {
     std::vector<std::string> OrdersVect;
     std::queue<std::string> QueueOrder;
@@ -34,9 +33,10 @@ void Reception::parseOrder(std::string const &order)
     OrdersVect = CleanOrder(order);
     if (OrdersVect.empty()) {
         std::cerr << "Error: Invalid Order" << std::endl;
-        return;
+        return QueueOrder;
     }
     QueueOrder = FillQueueOrder(OrdersVect);
+    return (QueueOrder);
 }
 
 bool Reception::launchShell()
@@ -70,14 +70,7 @@ void Reception::displayKitchensStatus()
     //
 }
 
-void findAndDeleteKitchens(Kitchens &toDelete)
-{
-    for (auto &i: kitchensProcess_) {
-        if (
-    }
-}
-
-int Reception::createNewKitchenProcess(const APizza &toPrepare)
+int Reception::createNewKitchenProcess(const std::string &toPrepare)
 {
     InterProcessCom currentStream;
     pid_t pid;
@@ -90,10 +83,8 @@ int Reception::createNewKitchenProcess(const APizza &toPrepare)
     if (pid == 0) {
         newKitchen.runCookingProcess(toPrepare);
         // Exit to close the child process
-
         exit(EXIT_SUCCESS);
     } else if (pid > 0) {
-        this->nbKitchens_ += 1;
         this->kitchensProcess_.emplace_back(newKitchen);
         this->streamCom_.emplace_back(currentStream);
     } else {
@@ -106,7 +97,7 @@ int Reception::createNewKitchenProcess(const APizza &toPrepare)
 
 int Reception::sendPizzaToKitchens()
 {
-    APizza currentPizza = this->pizzas_.front();
+    std::string currentPizza = this->pizzas_.front();
     bool taskDone = false;
 
     for (auto &kitchen : this->kitchensProcess_) {

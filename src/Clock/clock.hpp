@@ -18,8 +18,8 @@ class Clock : public IClock
 
 public:
     Clock();
-    Clock(Clock& toCopy) = delete;
-    Clock(Clock&& toMove) = delete;
+    //Clock(Clock& toCopy) = delete;
+    //Clock(Clock&& toMove) = delete;
 
     ~Clock() override = default;
 

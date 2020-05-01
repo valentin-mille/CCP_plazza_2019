@@ -20,8 +20,8 @@ NAME		=	plazza
 
 $(NAME): $(OBJ)
 	@echo -e "\e[36;1m\nMAKE $(NAME)\n\e[0m"
-	$(LD) -o $(NAME) $(OBJ)
-	#@$(LD) $^ -o $@ $(CXXFLAGS) $(CPPFLAGS)
+	#@$(LD) -o $(NAME) $(OBJ)
+	@$(LD) $^ -o $@
 
 all:$(NAME)
 
@@ -53,8 +53,8 @@ fclean: clean
 
 re:	fclean	all
 
-#%.o:            %.cpp
-#		@echo -e "[\033[32;1m\xe2\x9c\x93\033[0m] $<$(END) \033[31;1m\xe2\x9f\xb6\033[0m $@"
-#		@$(CXX) $(CXXFLAGS) -o $@ -c $<
+%.o:            %.cpp
+		@echo -e "[\033[32;1m\xe2\x9c\x93\033[0m] $<$(END) \033[31;1m\xe2\x9f\xb6\033[0m $@"
+		@$(LD) -o $@ -c $< $(CXXFLAGS) $(CPPFLAGS)
 
 .PHONY:	all	clean debug tests_run fclean re $(NAME)

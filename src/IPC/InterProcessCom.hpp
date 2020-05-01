@@ -25,6 +25,8 @@ class InterProcessCom {
         std::string readBuffer();
         void readInformations();
         void writeInformations(const std::string &infos);
+        std::string operator<<(std::vector<std::string> const &order);
+        std::string operator>>(std::vector<std::string> const &order);
 
     private:
         int fdWrite_;
