@@ -57,19 +57,6 @@ bool isOrderValid(std::vector<std::string> order)
     return (false);
 }
 
-std::vector<std::string> tokeniseString(std::string const &order)
-{
-    std::vector<std::string> tokens;
-    std::stringstream check1(order);
-    std::string intermediate;
-
-    while(getline(check1, intermediate, ' '))
-    {
-        tokens.push_back(intermediate);
-    }
-    return (tokens);
-}
-
 std::string createStringOrder(std::vector<std::string> &input)
 {
     size_t i = 0;
@@ -101,7 +88,7 @@ std::vector <std::string> handleMultipleCommands(std::string const &OrderInput, 
     {
         if (intermediate.at(0) == ' ')
             intermediate.erase(0, 1);
-        tmp2 = tokeniseString(intermediate);
+        tmp2 = tokeniseString(intermediate, ' ');
         OrderTokens.push_back(tmp2);
     }
     while (i < nbOrder) {
@@ -124,7 +111,7 @@ std::vector<std::string> CleanOrder(std::string const &OrderInput)
     std::string strOrder;
 
     if (nbOrder == 1) {
-        tmp = tokeniseString(OrderInput);
+        tmp = tokeniseString(OrderInput, ' ');
         if (isOrderValid(tmp)) {
             strOrder = createStringOrder(tmp);
             result.push_back(strOrder);
