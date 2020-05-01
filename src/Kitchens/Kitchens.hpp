@@ -63,6 +63,7 @@ class Kitchens
     std::vector<Cooks> cooks_;
     std::array<int, Ingredients::INGREDIENTS_COUNT> stock_;
     float timeToReplaceIngredients_;
+    size_t id_;
 };
 
 #endif

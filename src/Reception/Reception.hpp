@@ -32,14 +32,15 @@ class Reception {
         int createNewKitchenProcess(const APizza &toPrepare);
         int sendPizzaToKitchens();
     private:
-        bool shellActive_;
         std::vector<InterProcessCom> streamCom_; // Mutex is not copiable
         std::vector<Kitchens> kitchensProcess_;
         std::vector<std::string> lastOrders_;
         float multiplier_;
         int nbOfCooks_;
         int deliveryTime_;
-        std::queue<APizza> pizzas_;
+        std::queue<std::String> pizzas_;
+        size_t nbKitchens_;
+        bool shellActive_;
 };
 
 #endif /* !RECEPTION_HPP */

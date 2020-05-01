@@ -12,15 +12,18 @@
 #include <queue>
 #include <unistd.h>
 
-#include "InterProcessCom.hpp"
 #include "APizza.hpp"
+#include "InterProcessCom.hpp"
 #include "Kitchens.hpp"
 #include "Reception.hpp"
 
 Reception::Reception(float multiplier, int nbOfCooks, int deliveryTime)
-    : multiplier_(multiplier), nbOfCooks_(nbOfCooks), deliveryTime_(deliveryTime)
+    : multiplier_(multiplier),
+      nbOfCooks_(nbOfCooks),
+      deliveryTime_(deliveryTime),
+      nbKitchens_(0),
+      shellActive_(false)
 {
-    this->shellActive_ = false;
 }
 
 void Reception::parseOrder(std::string const &order)
@@ -67,6 +70,13 @@ void Reception::displayKitchensStatus()
     //
 }
 
+void findAndDeleteKitchens(Kitchens &toDelete)
+{
+    for (auto &i: kitchensProcess_) {
+        if (
+    }
+}
+
 int Reception::createNewKitchenProcess(const APizza &toPrepare)
 {
     InterProcessCom currentStream;
@@ -80,8 +90,11 @@ int Reception::createNewKitchenProcess(const APizza &toPrepare)
     if (pid == 0) {
         newKitchen.runCookingProcess(toPrepare);
         // Exit to close the child process
+
         exit(EXIT_SUCCESS);
     } else if (pid > 0) {
+        this->nbKitchens_ += 1;
+        this->kitchensProcess_.emplace_back(newKitchen);
         this->streamCom_.emplace_back(currentStream);
     } else {
         std::cerr << "==> New Kitchen process failure: " << strerror(errno)
