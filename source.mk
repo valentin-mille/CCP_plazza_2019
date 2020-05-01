@@ -31,7 +31,6 @@ SRC     	=		main.cpp											\
 					src/Tools/Usage.cpp									\
 					src/Tools/ParseCommandLine.cpp 						\
 					src/Tools/CleanOrder.cpp							\
-					src/Tools/FillQueueOrder.cpp						\
 					src/Exception/Exception.cpp							\
 					src/Exception/ExceptionParser.cpp					\
 					src/Exception/ExceptionPlazza.cpp					\

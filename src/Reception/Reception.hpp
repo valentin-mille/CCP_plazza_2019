@@ -28,7 +28,8 @@ class Reception {
         bool isOrderValid();
 
         void displayKitchensStatus(); // [TODO] add the Kitchens
-        std::queue<std::string> parseOrder(std::string const &order);
+        void parseOrder(std::string const &order);
+        void FillQueueOrder(std::vector<std::string> const &OrdersVect);
         int createNewKitchenProcess(const APizza &toPrepare);
         int sendPizzaToKitchens();
     private:
@@ -39,7 +40,7 @@ class Reception {
         float multiplier_;
         int nbOfCooks_;
         int deliveryTime_;
-        std::queue<APizza> pizzas_;
+        std::queue<std::string> pizzas_;
 };
 
 #endif /* !RECEPTION_HPP */
