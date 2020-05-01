@@ -31,11 +31,14 @@ SRC     	=		main.cpp											\
 					src/Tools/Usage.cpp									\
 					src/Tools/ParseCommandLine.cpp 						\
 					src/Tools/CleanOrder.cpp							\
+					src/Tools/getCountPizza.cpp							\
+					src/Tools/tokeniseString.cpp						\
 					src/Exception/Exception.cpp							\
 					src/Exception/ExceptionParser.cpp					\
 					src/Exception/ExceptionPlazza.cpp					\
 					src/Reception/Reception.cpp							\
 					src/IPC/InterProcessCom.cpp							\
+					src/IPC/Operators.cpp								\
 					src/Kitchens/Kitchens.cpp 							\
 					src/Pizza/APizza.cpp 								\
 					src/Cooks/Cooks.cpp									\
