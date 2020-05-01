@@ -25,6 +25,22 @@ Reception::Reception(float multiplier, int nbOfCooks, int deliveryTime)
 {
 }
 
+void Reception::FillQueueOrder(std::vector<std::string> const &OrdersVect)
+{
+    int size = OrdersVect.size();
+    int i = 0;
+
+    if (size == 1) {
+        this->pizzas_.push(OrdersVect.at(0));
+    } else {
+        while (i < size) {
+            this->pizzas_.push(OrdersVect.at(i));
+            i++;
+        }
+    }
+    return;
+}
+
 std::queue<std::string> Reception::parseOrder(std::string const &order)
 {
     std::vector<std::string> OrdersVect;
@@ -35,8 +51,8 @@ std::queue<std::string> Reception::parseOrder(std::string const &order)
         std::cerr << "Error: Invalid Order" << std::endl;
         return QueueOrder;
     }
-    QueueOrder = FillQueueOrder(OrdersVect);
-    return (QueueOrder);
+    FillQueueOrder(OrdersVect);
+    return QueueOrder;
 }
 
 bool Reception::launchShell()

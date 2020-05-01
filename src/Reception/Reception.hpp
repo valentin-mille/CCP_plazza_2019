@@ -29,6 +29,7 @@ class Reception {
         void displayKitchensStatus(); // [TODO] add the Kitchens
         std::queue<std::string> parseOrder(std::string const &order);
         int createNewKitchenProcess(const std::string &toPrepare);
+        void FillQueueOrder(std::vector<std::string> const &OrdersVect);
         int sendPizzaToKitchens();
     private:
         std::vector<InterProcessCom> streamCom_; // Mutex is not copiable
