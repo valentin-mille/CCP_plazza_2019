@@ -12,11 +12,13 @@
 #include <Ingredients.hpp>
 
 class IFood {
-  private:
-    /* data */
+  protected:
+    IFood() = default;
   public:
+    IFood(IFood const &to_copy) = default;
+    IFood(IFood &&to_move) = default;
     virtual ~IFood() = default;
-    [[nodiscard]] double virtual getCookingTime() const = 0;
+    [[nodiscard]] int virtual getCookingTime() const = 0;
     [[nodiscard]] std::string virtual getTypeString() const = 0;
     [[nodiscard]] int virtual getType() const = 0;
     [[nodiscard]] int virtual getSize() const = 0;

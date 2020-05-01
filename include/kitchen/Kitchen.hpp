@@ -23,7 +23,7 @@ class Kitchen {
     std::mutex _stockMutex;
     Clock _inactivityClock;
     Clock _refoundClock;
-    int _multiplier;
+    float _multiplier;
     int _nbCooks;
     int _deliveryTime;
     ThreadPool _threadPool;
@@ -31,17 +31,25 @@ class Kitchen {
 
   public:
     void update();
+    void newPizza();
     void printStock();
-    Kitchen(int multiplier, int nbCooks, int deliveryTime);
+    Kitchen(float multiplier, int nbCooks, int deliveryTime);
     ~Kitchen();
 };
 
-Kitchen::Kitchen(int multiplier, int nbCooks, int deliveryTime)
+Kitchen::Kitchen(float multiplier, int nbCooks, int deliveryTime)
     : _multiplier(multiplier), _nbCooks(nbCooks), _deliveryTime(deliveryTime)
 {
+    _threadPool.addNewThread(_nbCooks, multiplier);
     _refoundClock.reset();
     for (auto &ingredient: _stock)
         ingredient = 5;
+}
+
+void Kitchen::newPizza()
+{
+    _inactivityClock.reset();
+    _threadPool.addOnQueue();
 }
 
 void Kitchen::update()
@@ -58,6 +66,7 @@ void Kitchen::update()
             _refoundClock.reset();
             _stockMutex.unlock();
             printStock();
+            newPizza();
         }
     }
 }

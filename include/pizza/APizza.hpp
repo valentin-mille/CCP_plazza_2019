@@ -38,7 +38,7 @@ class APizza : public IFood {
     std::vector<Ingredients> _ingredients;
 
   public:
-    [[nodiscard]] double getCookingTime() const override;
+    [[nodiscard]] int getCookingTime() const override;
     [[nodiscard]] int getType() const override;
     [[nodiscard]] std::string getTypeString() const override;
     [[nodiscard]] int getSize() const override;
@@ -47,9 +47,11 @@ class APizza : public IFood {
     [[nodiscard]] std::string getIngredientsString() const override;
     APizza(PizzaSize);
     ~APizza();
+    APizza(APizza const &to_copy) = default;
+    APizza(APizza &&to_move) = default;
 };
 
-double APizza::getCookingTime() const
+int APizza::getCookingTime() const
 {
     return _cookingTime;
 }

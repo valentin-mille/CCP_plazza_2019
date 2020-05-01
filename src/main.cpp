@@ -11,11 +11,8 @@
 
 int main()
 {
-    Kitchen kitchen(1, 5, 2000);
-    ReginaPizza myRegina(PizzaSize::M);
+    Kitchen kitchen(6, 5, 500);
 
-    std::cout << myRegina.getTypeString() << std::endl;
-    std::cout << myRegina.getSizeString() << std::endl;
 
     kitchen.update();
     return 0;

@@ -7,51 +7,92 @@
 
 #pragma once
 
+#include "pizza/IFood.hpp"
 #include <chrono>
+#include <condition_variable>
 #include <functional>
 #include <iostream>
+#include <memory>
+#include <mutex>
+#include <queue>
 #include <thread>
-#include <vector>
-
-enum Status
-{
-    FREE = 0,
-    BUSY
-};
 
 class Cook {
   private:
-    Status _status;
-    std::thread _thread;
+    bool _working;
+    float _multiplier;
+    std::queue<std::unique_ptr<IFood>> &_queueRef;
+    std::mutex &_queueMutex;
+    std::condition_variable &_conditionalRef;
+    std::unique_ptr<std::thread> _thread;
 
   public:
-    Status getStatus() const;
-    void update();
     void initThread();
+    std::thread &getThread();
+    void setWorkingState(bool workingState);
+    bool getWorkingState() const;
+    void update();
 
-    Cook(Cook &&) = default;
-    Cook();
+    Cook(Cook &&to_move) = default;
+    Cook(std::queue<std::unique_ptr<IFood>> &queueRef, float multiplier,
+        std::mutex &, std::condition_variable &);
     ~Cook();
 };
 
-void Cook::update()
+std::thread &Cook::getThread()
 {
-  std::cout << "Pizza cooking" << std::endl;
-    // std::conditional_cariable
-  std::this_thread::sleep_for(std::chrono::seconds(1));
-  std::cout << "Pizza Finish" << std::endl;
+    return *(_thread.get());
 }
 
-Status Cook::getStatus() const
+bool Cook::getWorkingState() const
 {
-    return _status;
+    return _working;
+}
+
+void Cook::setWorkingState(bool working)
+{
+    _working = working;
+}
+
+void Cook::update()
+{
+    std::unique_lock<std::mutex> lock(_queueMutex, std::defer_lock);
+    IFood *foodRef;
+
+    while (_working) {
+        lock.lock();
+        _conditionalRef.wait(lock,
+            [this] { return (!this->_queueRef.empty()) || (!_working); });
+        if (!_working) {
+            lock.unlock();
+            break;
+        }
+        std::cout << "LockQueue" << std::endl;
+        foodRef = _queueRef.front().release();
+        _queueRef.pop();
+        lock.unlock();
+        _conditionalRef.notify_one();
+        std::cout << "unLockQueue" << std::endl;
+
+        std::cout << "Pizza " << foodRef->getTypeString() << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(
+            (int)(foodRef->getCookingTime() * _multiplier)));
+        std::cout << "Pizza Finish" << std::endl;
+    }
+    std::cout << "Cook leave" << std::endl;
 }
 
 void Cook::initThread()
 {
+    _working = true;
+    _thread = std::make_unique<std::thread>(
+        std::thread([this]() { this->update(); }));
 }
 
-Cook::Cook() : _status(FREE), _thread(std::thread([this]() { update(); }))
+Cook::Cook(std::queue<std::unique_ptr<IFood>> &queueRef, float multiplier,
+    std::mutex &foodMutexRef, std::condition_variable &conditionalRef)
+    : _multiplier(multiplier), _queueRef(queueRef), _queueMutex(foodMutexRef),
+      _conditionalRef(conditionalRef), _thread(nullptr)
 {
 }
 

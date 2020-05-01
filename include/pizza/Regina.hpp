@@ -19,6 +19,7 @@ public:
 
 ReginaPizza::ReginaPizza(PizzaSize pizzaSize): APizza(pizzaSize)
 {
+    _cookingTime = 1000;
     _type = PizzaType::Regina;
     _ingredients.push_back(Ingredients::DOE);
     _ingredients.push_back(Ingredients::GRUYERE);

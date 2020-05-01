@@ -12,7 +12,7 @@ OBJ		=	$(addprefix ./src/, $(SRC:.cpp=.o))
 
 NAME		=	plazza
 
-override CXXFLAGS	+= -Wall -pthread -Wextra -I./include -I./include/clock -I./include/cook -I./include/ingredient -I./include/kitchen -I ./include/pizza -std=c++17
+override CXXFLAGS	+= -ggdb3 -Wall -pthread -Wextra -I./include -I./include/clock -I./include/cook -I./include/ingredient -I./include/kitchen -I ./include/pizza -std=c++17
 
 $(NAME): $(OBJ)
 	@echo -e "\e[36;1m\nMAKE $(NAME)\n\e[0m"
