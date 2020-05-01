@@ -15,7 +15,7 @@ CC					=		g++
 
 $(LD)				=		$(CC)
 
-CPPFLAGS			= 		$(addprefix -I../sources/, $(FLAGS))
+CPPFLAGS			= 		$(addprefix -I../src/, $(FLAGS))
 
 LDFLAGS 			=		-lcriterion --coverage -lgcov
 
