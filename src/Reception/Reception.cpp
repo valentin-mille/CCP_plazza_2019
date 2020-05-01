@@ -23,7 +23,7 @@ Reception::Reception(float multiplier, int nbOfCooks, int deliveryTime)
     this->shellActive_ = false;
 }
 
-void Reception::parseOrder(std::string const &order)
+std::queue<std::string> Reception::parseOrder(std::string const &order)
 {
     std::vector<std::string> OrdersVect;
     std::queue<std::string> QueueOrder;
@@ -34,6 +34,7 @@ void Reception::parseOrder(std::string const &order)
         return;
     }
     QueueOrder = FillQueueOrder(OrdersVect);
+    return (QueueOrder);
 }
 
 bool Reception::launchShell()

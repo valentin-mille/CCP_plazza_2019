@@ -28,7 +28,7 @@ class Reception {
         bool isOrderValid();
 
         void displayKitchensStatus(); // [TODO] add the Kitchens
-        void parseOrder(std::string const &order);
+        std::queue<std::string> parseOrder(std::string const &order);
         int createNewKitchenProcess(const APizza &toPrepare);
         int sendPizzaToKitchens();
     private:
