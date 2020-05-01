@@ -10,6 +10,7 @@
 
 #include <string>
 #include <mutex>
+#include <vector>
 
 class InterProcessCom {
 
