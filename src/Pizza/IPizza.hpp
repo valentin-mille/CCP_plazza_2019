@@ -29,8 +29,7 @@ class IPizza
 private:
     /* data */
 public:
-    IPizza(/* args */);
-    ~IPizza();
+    virtual ~IPizza() = default;
 };
 
 // IPizza::IPizza(/* args */)

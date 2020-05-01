@@ -13,6 +13,7 @@
 #include <unistd.h>
 
 #include "InterProcessCom.hpp"
+#include "APizza.hpp"
 #include "Kitchens.hpp"
 #include "Reception.hpp"
 

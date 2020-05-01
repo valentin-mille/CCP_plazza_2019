@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <IPizza.hpp>
+#include "IPizza.hpp"
 
 class APizza : public IPizza
 {
@@ -17,11 +17,3 @@ public:
     APizza(/* args */);
     ~APizza();
 };
-
-// APizza::APizza(/* args */)
-// {
-// }
-
-// APizza::~APizza()
-// {
-// }

@@ -26,7 +26,7 @@ FLAGS		=		Tools/							\
 
 SRC     	=		main.cpp											\
 					driver.cpp											\
-					src/Clock/clock.cpp 											\
+					src/Clock/clock.cpp 								\
 					src/Parser/Parser.cpp								\
 					src/Tools/Usage.cpp									\
 					src/Tools/ParseCommandLine.cpp 						\
@@ -38,9 +38,10 @@ SRC     	=		main.cpp											\
 					src/Reception/Reception.cpp							\
 					src/IPC/InterProcessCom.cpp							\
 					src/Kitchens/Kitchens.cpp 							\
+					src/Pizza/APizza.cpp 								\
 					src/Cooks/Cooks.cpp									\
 
-TEST 		=		testsParseCommandLine.cpp 								\
+TEST 		=		testsParseCommandLine.cpp 							\
 
-SRC_TEST	=		$(addprefix ../, $(filter-out main.cpp, $(SRC)))		\
+SRC_TEST	=		$(addprefix ../, $(filter-out main.cpp, $(SRC)))	\
 					$(addprefix src/, $(TEST))
