@@ -40,6 +40,7 @@ bool isOrderValid(std::vector<std::string> order)
     std::vector<std::string> recipes = {"regina", "fantasia", "margarita", "americana"};
     std::vector<std::string> sizes = {"S", "M", "L", "XL", "XXL"};
 
+    std::for_each(order.at(0).begin(), order.at(0).end(), [](char & c) { c = ::tolower(c); });
     if (order.size() != 3)
         return (false);
     auto it = std::find(recipes.begin(), recipes.end(), order.at(0));
