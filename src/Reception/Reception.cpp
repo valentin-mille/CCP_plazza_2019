@@ -55,10 +55,6 @@ void Reception::parseOrder(std::string const &order)
         return;
     }
     FillQueueOrder(OrdersVect);
-    tmp = process.pack(this->pizzas_.front());
-    std::cout << "TMP IS : " << tmp << std::endl;
-    std::string test1 = process.unpack(tmp);
-    std::cout << "TEST UNPACK : " << test1 << std::endl;
     return;
 }
 
