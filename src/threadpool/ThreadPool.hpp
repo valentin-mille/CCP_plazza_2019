@@ -25,7 +25,7 @@ class ThreadPool {
 
   public:
     void addNewThread(size_t nbNew, float multiplier);
-    void addOnQueue();
+    int addOnQueue(std::unique_ptr<IFood> food);
 
     ThreadPool();
     ~ThreadPool();

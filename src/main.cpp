@@ -11,7 +11,7 @@
 
 int main()
 {
-    Kitchen kitchen(6, 5, 500);
+    Kitchen kitchen(1, 5, 1000);
 
 
     kitchen.update();

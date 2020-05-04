@@ -15,15 +15,17 @@ void ThreadPool::addNewThread(size_t nbNew, float multiplier)
         _Cooks[i].initThread();
 }
 
-void ThreadPool::addOnQueue()
+int ThreadPool::addOnQueue(std::unique_ptr<IFood> food)
 {
     if (_foods.size() < _Cooks.size()) {
         std::lock_guard<std::mutex> lock(_foodMutex);
-        _foods.push(std::make_unique<ReginaPizza>(PizzaSize::XL));
+        _foods.push(std::move(food));
         _conditional.notify_one();
         std::cout << "Log: Kitchen-accepted"<< _foods.size() << " on Queue;" << std::endl;
+        return 0;
     } else {
         std::cout << "Log: Kitchen-Full" << std::endl;
+        return 1;
     }
 }
 

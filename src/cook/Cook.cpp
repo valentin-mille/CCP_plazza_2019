@@ -42,7 +42,7 @@ void Cook::update()
         _conditionalRef.notify_one();
         std::cout << "Log: Cook-unLockQueue" << std::endl;
 
-        std::cout << "Log: Pizza-start-cooking" << foodRef->getTypeString() << std::endl;
+        std::cout << "Log: Pizza-start-cooking " << foodRef->getTypeString() << " " << foodRef->getSizeString() << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(
             (int)(foodRef->getCookingTime() * _multiplier)));
         std::cout << "Log: Pizza-Finish" << std::endl;

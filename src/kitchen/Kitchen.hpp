@@ -9,14 +9,15 @@
 
 #include <array>
 #include <iostream>
+#include <mutex>
 #include <thread>
 #include <vector>
-#include <mutex>
 
+#include <ThreadPool.hpp>
 #include <clock.hpp>
 #include <cook/Cook.hpp>
-#include <ThreadPool.hpp>
 #include <ingredient/Ingredients.hpp>
+#include "pizza/IFood.hpp"
 
 class Kitchen {
   private:
@@ -31,8 +32,10 @@ class Kitchen {
 
   public:
     void update();
-    void newPizza();
+    void newPizza(PizzaType type, PizzaSize size);
     void printStock();
+    int haveIngredients(std::vector<Ingredients>);
+    void useIngredients(std::vector<Ingredients>);
     Kitchen(float multiplier, int nbCooks, int deliveryTime);
     ~Kitchen();
 };
