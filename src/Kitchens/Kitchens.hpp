@@ -48,10 +48,11 @@ class Kitchens
     void printStock();
 
     void resetIngredients();
+    void getKitchenStatus();
     void regenerateOneOfEachIngredients();
     bool isCookAvailable() const;
-    bool cookPizza(const APizza &toPrepare);
-    int runCookingProcess(const std::string &pizza);
+    bool cookPizza(const APizza &toPrepare, size_t &nbPizzas);
+    void runCookingProcess(const std::string &pizza, size_t  &nbPizzas);
 
   private:
     // Add the clock
@@ -60,9 +61,10 @@ class Kitchens
     int nbCooks_;
     int deliveryTime_;
     std::vector<Cooks> cooks_;
-    Clock _refoundClock;
+    Clock refoundClock_;
     std::array<int, Ingredients::INGREDIENTS_COUNT> stock_;
     float timeToReplaceIngredients_;
+    size_t availableCook_;
 };
 
 #endif

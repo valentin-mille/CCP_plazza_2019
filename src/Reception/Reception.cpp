@@ -8,13 +8,16 @@
 #include <cerrno>
 #include <cstdlib>
 #include <cstring>
+#include <exception>
 #include <iostream>
+#include <iterator>
 #include <queue>
 #include <unistd.h>
 
 #include "APizza.hpp"
 #include "InterProcessCom.hpp"
 #include "Kitchens.hpp"
+#include "Process.hpp"
 #include "Reception.hpp"
 
 Reception::Reception(float multiplier, int nbOfCooks, int deliveryTime)
@@ -31,10 +34,10 @@ void Reception::FillQueueOrder(std::vector<std::string> const &OrdersVect)
     int i = 0;
 
     if (size == 1) {
-        this->pizzas_.push(OrdersVect.at(0));
+        pizzas_.push(OrdersVect.at(0));
     } else {
         while (i < size) {
-            this->pizzas_.push(OrdersVect.at(i));
+            pizzas_.push(OrdersVect.at(i));
             i++;
         }
     }
@@ -60,7 +63,7 @@ bool Reception::launchShell()
     bool isRunning = true;
     std::string input;
 
-    this->shellActive_ = true;
+    shellActive_ = true;
     while (isRunning) {
         std::cout << "> ";
         std::getline(std::cin, input);
@@ -76,33 +79,52 @@ bool Reception::launchShell()
 
 bool Reception::getShellActivity()
 {
-    return (this->shellActive_);
+    return (shellActive_);
 }
 
 void Reception::displayKitchensStatus()
 {
     // print the number the current occupancy of the cooks, as well as theirs
     // stocks of ingredients
-    //
+    for (size_t i = 0; i < streamCom_.size(), ++i) {
+        streamCom_[i].writeInformations("status");
+        Process::waitResponse(kitchensPid_[i]);
+        std::cout << streamCom_[i].readInformations() << std::endl;
+    }
 }
 
-int Reception::createNewKitchenProcess(const std::string &toPrepare)
+size_t Reception::getNumberOfPizza(std::string const &pizzaString)
 {
-    InterProcessCom currentStream;
+    size_t xCharPos = pizzaString.find('x');
+
+    if (xCharPos != std::string::npos) {
+        return getCountPizza(pizzaString);
+    }
+    return 0;
+}
+
+std::string Reception::getPizzaTypeSize(const std::string &currentPizza)
+{
+    size_t pos = currentPizza.find("x");
+
+    return currentPizza.substr(0, pos - 1);
+}
+
+int Reception::createNewKitchenProcess(const std::string &toPrepare,
+                                       size_t &nbPizzas)
+{
     pid_t pid;
-    Kitchens newKitchen(this->multiplier_,
-                        this->nbOfCooks_,
-                        this->deliveryTime_,
-                        currentStream);
+    InterProcessCom currentStream;
+    Kitchens newKitchen(multiplier_, nbOfCooks_, deliveryTime_, currentStream);
 
     pid = fork();
     if (pid == 0) {
-        newKitchen.runCookingProcess(toPrepare);
-        // Exit to close the child process
+        // Call pack function with the new nbPizzas
+        newKitchen.runCookingProcess(toPrepare, nbPizzas);
+        // Exit to close the child process and destroy the kitchen
         exit(EXIT_SUCCESS);
     } else if (pid > 0) {
-        this->kitchensProcess_.emplace_back(newKitchen);
-        this->streamCom_.emplace_back(currentStream);
+        streamCom_.emplace_back(currentStream);
     } else {
         std::cerr << "==> New Kitchen process failure: " << strerror(errno)
                   << std::endl;
@@ -111,21 +133,33 @@ int Reception::createNewKitchenProcess(const std::string &toPrepare)
     return 0;
 }
 
-int Reception::sendPizzaToKitchens()
+void Reception::checkKitchensProcessus()
 {
-    std::string currentPizza = this->pizzas_.front();
-    bool taskDone = false;
-
-    for (auto &kitchen : this->kitchensProcess_) {
-        if (kitchen.isCookAvailable()) {
-            kitchen.runCookingProcess(currentPizza);
-            taskDone = true;
-            break;
+    for (size_t i = 0; i < kitchensPid_.size(); ++i) {
+        if (Process::isProcessRunning(kitchensPid_[i])) {
+            kitchensPid_.erase(kitchensPid_.begin() + i);
         }
     }
-    if (taskDone == false) {
-        if (this->createNewKitchenProcess(currentPizza)) {
-            return 1;
+}
+
+int Reception::sendPizzasToKitchens()
+{
+    std::string currentPizza = pizzas_.front();
+    size_t nbPizzas = getNumberOfPizza(currentPizza);
+    std::string pizzaTypeSize(getPizzaTypeSize(currentPizza));
+
+    checkKitchensProcessus();
+    while (pizzas_.empty() == false) {
+        while (nbPizzas > 0) {
+            for (auto &pipeToKitchen : streamCom_) {
+                // Call pack function with the new nbPizzas
+                pipeToKitchen.writeInformations(currentPizza);
+            }
+            if (nbPizzas > 0) {
+                if (createNewKitchenProcess(currentPizza, nbPizzas)) {
+                    return 1;
+                }
+            }
         }
     }
     return 0;

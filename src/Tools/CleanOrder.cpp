@@ -22,11 +22,14 @@ size_t findNbOrder(std::string const &input)
     return (result);
 }
 
-bool checkNbPizza(std::string &nbPizza)
+static bool checkNbPizza(std::string &nbPizza)
 {
+    int convertedNumber = 0;
+
     if (nbPizza.front() == 'x') {
         nbPizza.erase(nbPizza.begin());
-        if (atoi(nbPizza.c_str()) > 0) {
+        convertedNumber = atoi(nbPizza.c_str());
+        if (convertedNumber > 0) {
             return (true);
         }
         return (false);
