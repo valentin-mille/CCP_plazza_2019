@@ -20,14 +20,14 @@ Kitchens::Kitchens(float multiplier,
       multiplier_(multiplier),
       nbCooks_(nbCooks),
       deliveryTime_(deliveryTime),
-      _refoundClock()
+      refoundClock_(),
+      availableCook_(nbCooks)
 {
-    _refoundClock.reset();
+    refoundClock_.reset();
     for (int i = 0; i < nbCooks_; i++)
         cooks_.push_back(Cooks{});
     for (auto &ingredient : stock_)
         ingredient = 5;
-    this->nbCooks_ = nbCooks;
     resetIngredients();
 }
 
@@ -37,10 +37,10 @@ Kitchens::~Kitchens()
 
 void Kitchens::update()
 {
-    if (_refoundClock.getElapsedTime() >= deliveryTime_) {
+    if (refoundClock_.getElapsedTime() >= deliveryTime_) {
         for (auto &ingredient : stock_)
             ingredient += 1;
-        _refoundClock.reset();
+        refoundClock_.reset();
         printStock();
     }
 }
@@ -67,6 +67,11 @@ void Kitchens::regenerateOneOfEachIngredients()
     }
 }
 
+void Kitchens::getKitchenStatus()
+{
+
+}
+
 bool Kitchens::isCookAvailable() const
 {
     for (auto const &cook : this->cooks_) {
@@ -77,10 +82,12 @@ bool Kitchens::isCookAvailable() const
     return false;
 }
 
-bool Kitchens::cookPizza(const APizza &toPrepare)
+bool Kitchens::cookPizza(const APizza &toPrepare, size_t &nbPizzas)
 {
     for (auto &cook : this->cooks_) {
         if (cook.isOccupied() == false) {
+            availableCook_ -= 1;
+            nbPizzas -= 1;
             cook.setCookStatus(true);
             // Give the pizza to the cook
             return true;
@@ -89,12 +96,12 @@ bool Kitchens::cookPizza(const APizza &toPrepare)
     return false;
 }
 
-int Kitchens::runCookingProcess(const std::string &pizza)
+void Kitchens::runCookingProcess(const std::string &pizza, size_t &nbPizzas)
 {
     // Call the serialized operator to unpack the string into pizza
     // Add the clock inside the loop condition
-    while (1) {
-        //if (cookPizza(pizza) == false) {
+    while (refoundClock_.getElapsedTime() < 5000) {
+        //if (cookPizza(pizza, nbPizzas) == false) {
             // Increment clock here
         //} else {
             // reset the clock here

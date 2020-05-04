@@ -22,6 +22,7 @@ FLAGS		=		Tools/							\
 					Kitchens/ 						\
 					Ingredients/ 					\
 					Clock/ 							\
+					Process/						\
 
 
 SRC     	=		main.cpp											\
@@ -42,6 +43,7 @@ SRC     	=		main.cpp											\
 					src/Kitchens/Kitchens.cpp 							\
 					src/Pizza/APizza.cpp 								\
 					src/Cooks/Cooks.cpp									\
+					src/Process/Process.cpp								\
 
 TEST 		=		testsParseCommandLine.cpp 							\
 
