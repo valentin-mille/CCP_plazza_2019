@@ -5,37 +5,7 @@
 ** Kitchen.hpp
 */
 
-#pragma once
-
-#include <array>
-#include <iostream>
-#include <thread>
-#include <vector>
-#include <mutex>
-
-#include <clock.hpp>
-#include <cook/Cook.hpp>
-#include <ThreadPool.hpp>
-#include <ingredient/Ingredients.hpp>
-
-class Kitchen {
-  private:
-    std::mutex _stockMutex;
-    Clock _inactivityClock;
-    Clock _refoundClock;
-    float _multiplier;
-    int _nbCooks;
-    int _deliveryTime;
-    ThreadPool _threadPool;
-    std::array<int, Ingredients::INGREDIENTS_COUNT> _stock;
-
-  public:
-    void update();
-    void newPizza();
-    void printStock();
-    Kitchen(float multiplier, int nbCooks, int deliveryTime);
-    ~Kitchen();
-};
+#include "Kitchen.hpp"
 
 Kitchen::Kitchen(float multiplier, int nbCooks, int deliveryTime)
     : _multiplier(multiplier), _nbCooks(nbCooks), _deliveryTime(deliveryTime)
@@ -56,7 +26,7 @@ void Kitchen::update()
 {
     while (1) {
         if (_inactivityClock.getElapsedTime() > 5000) {
-            std::cout << "kitchenClose" << std::endl;
+            std::cout << "Log: kitchenClose" << std::endl;
             return;
         }
         if (_refoundClock.getElapsedTime() >= _deliveryTime) {
@@ -66,7 +36,6 @@ void Kitchen::update()
             _refoundClock.reset();
             _stockMutex.unlock();
             printStock();
-            newPizza();
         }
     }
 }

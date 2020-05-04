@@ -5,31 +5,7 @@
 ** ThreadPool.hpp
 */
 
-#pragma once
-
-#include <condition_variable>
-#include <cook/Cook.hpp>
-#include <memory>
-#include <mutex>
-#include <pizza/IFood.hpp>
-#include <pizza/Regina.hpp>
-#include <queue>
-#include <vector>
-
-class ThreadPool {
-  private:
-    std::condition_variable _conditional;
-    std::vector<Cook> _Cooks;
-    std::queue<std::unique_ptr<IFood>> _foods;
-    std::mutex _foodMutex;
-
-  public:
-    void addNewThread(size_t nbNew, float multiplier);
-    void addOnQueue();
-
-    ThreadPool();
-    ~ThreadPool();
-};
+#include "ThreadPool.hpp"
 
 void ThreadPool::addNewThread(size_t nbNew, float multiplier)
 {
@@ -45,9 +21,9 @@ void ThreadPool::addOnQueue()
         std::lock_guard<std::mutex> lock(_foodMutex);
         _foods.push(std::make_unique<ReginaPizza>(PizzaSize::XL));
         _conditional.notify_one();
-        std::cout << "Kitchen accepted Pizza, "<< _foods.size() << " on Queue;" << std::endl;
+        std::cout << "Log: Kitchen-accepted"<< _foods.size() << " on Queue;" << std::endl;
     } else {
-        std::cout << "Kitchen Full" << std::endl;
+        std::cout << "Log: Kitchen-Full" << std::endl;
     }
 }
 
@@ -57,7 +33,6 @@ ThreadPool::ThreadPool()
 
 ThreadPool::~ThreadPool()
 {
-    std::cout << "Close ThreadPool" << std::endl;
     for (size_t i = 0; i < _Cooks.size(); i++) {
         _Cooks[i].setWorkingState(false);
     }

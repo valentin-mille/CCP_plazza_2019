@@ -5,17 +5,7 @@
 ** ReginaPizza.hpp
 */
 
-#pragma once
-
-#include<APizza.hpp>
-
-class ReginaPizza : public APizza
-{
-private:
-public:
-    ReginaPizza(PizzaSize);
-    ~ReginaPizza();
-};
+#include "Regina.hpp"
 
 ReginaPizza::ReginaPizza(PizzaSize pizzaSize): APizza(pizzaSize)
 {

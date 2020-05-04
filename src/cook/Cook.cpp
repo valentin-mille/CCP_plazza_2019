@@ -5,39 +5,7 @@
 ** Cook.cpp
 */
 
-#pragma once
-
-#include "pizza/IFood.hpp"
-#include <chrono>
-#include <condition_variable>
-#include <functional>
-#include <iostream>
-#include <memory>
-#include <mutex>
-#include <queue>
-#include <thread>
-
-class Cook {
-  private:
-    bool _working;
-    float _multiplier;
-    std::queue<std::unique_ptr<IFood>> &_queueRef;
-    std::mutex &_queueMutex;
-    std::condition_variable &_conditionalRef;
-    std::unique_ptr<std::thread> _thread;
-
-  public:
-    void initThread();
-    std::thread &getThread();
-    void setWorkingState(bool workingState);
-    bool getWorkingState() const;
-    void update();
-
-    Cook(Cook &&to_move) = default;
-    Cook(std::queue<std::unique_ptr<IFood>> &queueRef, float multiplier,
-        std::mutex &, std::condition_variable &);
-    ~Cook();
-};
+#include "Cook.hpp"
 
 std::thread &Cook::getThread()
 {
@@ -67,19 +35,19 @@ void Cook::update()
             lock.unlock();
             break;
         }
-        std::cout << "LockQueue" << std::endl;
+        std::cout << "Log: Cook-LockQueue" << std::endl;
         foodRef = _queueRef.front().release();
         _queueRef.pop();
         lock.unlock();
         _conditionalRef.notify_one();
-        std::cout << "unLockQueue" << std::endl;
+        std::cout << "Log: Cook-unLockQueue" << std::endl;
 
-        std::cout << "Pizza " << foodRef->getTypeString() << std::endl;
+        std::cout << "Log: Pizza-start-cooking" << foodRef->getTypeString() << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(
             (int)(foodRef->getCookingTime() * _multiplier)));
-        std::cout << "Pizza Finish" << std::endl;
+        std::cout << "Log: Pizza-Finish" << std::endl;
     }
-    std::cout << "Cook leave" << std::endl;
+    std::cout << "Log: Cook-leave" << std::endl;
 }
 
 void Cook::initThread()
