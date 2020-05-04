@@ -31,7 +31,7 @@ bool Process::isProcessRunning(pid_t pidProcess)
     return false;
 }
 
-void waitResponse(pid_t toWait)
+void Process::waitResponse(pid_t toWait)
 {
     waitpid(toWait, NULL, 0);
 }

@@ -5,6 +5,7 @@
 ** Reception.cpp
 */
 
+#include <bits/posix_opt.h>
 #include <cerrno>
 #include <cstdlib>
 #include <cstring>
@@ -42,23 +43,19 @@ void Reception::FillQueueOrder(std::vector<std::string> const &OrdersVect)
             i++;
         }
     }
-    return;
 }
 
 void Reception::parseOrder(std::string const &order)
 {
     std::vector<std::string> OrdersVect;
-    std::queue<std::string> QueueOrder;
     std::string tmp;
     InterProcessCom process;
 
     OrdersVect = CleanOrder(order);
     if (OrdersVect.empty()) {
         std::cerr << "Error: Invalid Order" << std::endl;
-        return;
     }
     FillQueueOrder(OrdersVect);
-    return;
 }
 
 bool Reception::launchShell()
@@ -89,19 +86,21 @@ void Reception::displayKitchensStatus()
 {
     // print the number the current occupancy of the cooks, as well as theirs
     // stocks of ingredients
-    for (size_t i = 0; i < streamCom_.size(), ++i) {
+    for (size_t i = 0; i < streamCom_.size(); ++i) {
         streamCom_[i].writeInformations("status");
         Process::waitResponse(kitchensPid_[i]);
-        std::cout << streamCom_[i].readInformations() << std::endl;
+        streamCom_[i].readInformations();
     }
 }
 
 size_t Reception::getNumberOfPizza(std::string const &pizzaString)
 {
     size_t xCharPos = pizzaString.find('x');
+    std::string stringWithNb;
 
     if (xCharPos != std::string::npos) {
-        return getCountPizza(pizzaString);
+        stringWithNb = pizzaString.substr(xCharPos);
+        return getCountPizza(stringWithNb);
     }
     return 0;
 }

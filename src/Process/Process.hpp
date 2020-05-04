@@ -15,6 +15,8 @@ class Process
   public:
     static int launchProcess();
     static bool isProcessRunning(pid_t pidProcess);
+    static void waitResponse(pid_t toWait);
+
 };
 
 #endif
