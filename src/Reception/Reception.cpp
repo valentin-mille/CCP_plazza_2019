@@ -16,6 +16,7 @@
 #include "InterProcessCom.hpp"
 #include "Kitchens.hpp"
 #include "Reception.hpp"
+#include "Tools.hpp"
 
 Reception::Reception(float multiplier, int nbOfCooks, int deliveryTime)
     : multiplier_(multiplier),
@@ -41,18 +42,20 @@ void Reception::FillQueueOrder(std::vector<std::string> const &OrdersVect)
     return;
 }
 
-std::queue<std::string> Reception::parseOrder(std::string const &order)
+void Reception::parseOrder(std::string const &order)
 {
     std::vector<std::string> OrdersVect;
     std::queue<std::string> QueueOrder;
+    std::string tmp;
+    InterProcessCom process;
 
     OrdersVect = CleanOrder(order);
     if (OrdersVect.empty()) {
         std::cerr << "Error: Invalid Order" << std::endl;
-        return QueueOrder;
+        return;
     }
     FillQueueOrder(OrdersVect);
-    return QueueOrder;
+    return;
 }
 
 bool Reception::launchShell()

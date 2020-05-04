@@ -12,6 +12,7 @@
 #include <string>
 
 #include "Tools.hpp"
+#include "InterProcessCom.hpp"
 
 Test(TestIsCommandLineError0, returnTrue)
 {
@@ -55,4 +56,18 @@ Test(TestValidOrder4, returnFalse)
     std::vector<std::string> order = {"regina", "S", "1"};
 
     cr_assert_eq(isOrderValid(order), false);
+}
+
+Test(TestSerialize1, returnTrue)
+{
+    InterProcessCom process;
+
+    cr_assert_eq(process.pack("regina S x2"), "1-1-2");
+}
+
+Test(TestSerialize2, returnTrue)
+{
+    InterProcessCom process;
+
+    cr_assert_eq(process.unpack("1-1-2"), "regina S x2");
 }
