@@ -62,12 +62,12 @@ Test(TestSerialize1, returnTrue)
 {
     InterProcessCom process;
 
-    cr_assert_eq(process.pack("regina S x2"), "1-1-2");
+    cr_assert_eq(process.pack("regina S x2"), "1-1");
 }
 
-Test(TestSerialize2, returnTrue)
+Test(TestSerialize4, returnTrue)
 {
     InterProcessCom process;
 
-    cr_assert_eq(process.unpack("1-1-2"), "regina S x2");
+    cr_assert_eq(process.unpack("1-1"), "regina S");
 }
