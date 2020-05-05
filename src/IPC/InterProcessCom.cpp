@@ -79,10 +79,11 @@ void InterProcessCom::writeInformations(const std::string &infos)
     // release the locked mutex automatically at the end of the scope
 }
 
-void InterProcessCom::readInformations()
+std::string InterProcessCom::readInformations()
 {
     std::lock_guard<std::mutex> lock(mutex);
     std::string buffer = this->readBuffer();
 
     std::cout << "result: \"" << buffer << "\"" << std::endl;
+    return buffer;
 }

@@ -30,7 +30,7 @@ class Reception
 
     void displayKitchensStatus(); // [TODO] add the Kitchens
     void parseOrder(std::string const &order);
-    int createNewKitchenProcess(const std::string &toPrepare, size_t &nbPizzas);
+    int createNewKitchenProcess(const std::string &currentPizza, size_t &nbPizzas);
     void FillQueueOrder(std::vector<std::string> const &OrdersVect);
     int sendPizzasToKitchens();
     std::string getPizzaTypeSize(const std::string &currentPizza);
