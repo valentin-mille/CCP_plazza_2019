@@ -60,11 +60,13 @@ void Kitchen::newPizza(PizzaType type, PizzaSize size)
 
 void Kitchen::update()
 {
+    std::cout << "Log: kitchenLaunch" << std::endl;
     while (1) {
         if (_inactivityClock.getElapsedTime() > 5000) {
             std::cout << "Log: kitchenClose" << std::endl;
             return;
         }
+        std::cout << "buffer : " << this->_pipeCom.readBuffer() << std::endl;
         if (_refoundClock.getElapsedTime() >= _deliveryTime) {
             _stockMutex.lock();
             for (auto &ingredient: _stock)

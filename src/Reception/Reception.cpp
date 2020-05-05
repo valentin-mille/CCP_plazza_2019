@@ -20,14 +20,8 @@ void Reception::FillQueueOrder(std::vector<std::string> const &OrdersVect)
     int size = OrdersVect.size();
     int i = 0;
 
-    if (size == 1) {
-        pizzas_.push(OrdersVect.at(0));
-    } else {
-        while (i < size) {
-            pizzas_.push(OrdersVect.at(i));
-            i++;
-        }
-    }
+    for(int i = 0; i < size; i++ )
+        pizzas_.push(OrdersVect.at(i));
 }
 
 void Reception::parseOrder(std::string const &order)
