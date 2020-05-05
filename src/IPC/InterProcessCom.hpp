@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "../Tools/Tools.hpp"
-#include "pizza/IFood.hpp"
+#include "IFood.hpp"
 
 class InterProcessCom {
 

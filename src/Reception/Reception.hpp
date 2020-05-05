@@ -23,9 +23,9 @@
 #include <unistd.h>
 
 #include "APizza.hpp"
-#include "kitchen/Kitchen.hpp"
+#include "Kitchen.hpp"
 #include "InterProcessCom.hpp"
-#include "Process/Process.hpp"
+#include "Process.hpp"
 #include "Tools.hpp"
 
 class Reception

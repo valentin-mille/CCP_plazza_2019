@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "pizza/IFood.hpp"
+#include "IFood.hpp"
 #include <chrono>
 #include <condition_variable>
 #include <functional>

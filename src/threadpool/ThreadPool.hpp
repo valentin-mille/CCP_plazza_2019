@@ -8,11 +8,11 @@
 #pragma once
 
 #include <condition_variable>
-#include <cook/Cook.hpp>
+#include "Cook.hpp"
 #include <memory>
 #include <mutex>
-#include <pizza/IFood.hpp>
-#include <pizza/Regina.hpp>
+#include "IFood.hpp"
+#include "Regina.hpp"
 #include <queue>
 #include <vector>
 

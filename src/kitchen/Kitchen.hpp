@@ -15,9 +15,9 @@
 
 #include <ThreadPool.hpp>
 #include <clock.hpp>
-#include <cook/Cook.hpp>
-#include <ingredient/Ingredients.hpp>
-#include "pizza/IFood.hpp"
+#include <Cook.hpp>
+#include "Ingredients.hpp"
+#include "IFood.hpp"
 #include "InterProcessCom.hpp"
 #include "Regina.hpp"
 
