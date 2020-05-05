@@ -57,6 +57,7 @@ void Reception::parseOrder(std::string const &order)
     OrdersVect = CleanOrder(order);
     if (OrdersVect.empty()) {
         std::cerr << "Error: Invalid Order" << std::endl;
+        return;
     }
     FillQueueOrder(OrdersVect);
 }
