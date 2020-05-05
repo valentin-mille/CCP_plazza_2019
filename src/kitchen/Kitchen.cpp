@@ -6,8 +6,6 @@
 */
 
 #include "Kitchen.hpp"
-#include "Regina.hpp"
-#include "InterProcessCom.hpp"
 
 template <typename T_object> std::unique_ptr<IFood> createFood(PizzaSize size)
 {

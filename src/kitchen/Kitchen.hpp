@@ -18,6 +18,8 @@
 #include <cook/Cook.hpp>
 #include <ingredient/Ingredients.hpp>
 #include "pizza/IFood.hpp"
+#include "InterProcessCom.hpp"
+#include "Regina.hpp"
 
 class Kitchen {
   private:
@@ -37,6 +39,6 @@ class Kitchen {
     void printStock();
     int haveIngredients(std::vector<Ingredients>);
     void useIngredients(std::vector<Ingredients>);
-    Kitchen(float multiplier, int nbCooks, int deliveryTime,const InterProcessCom &pipeCom);
+    Kitchen(float multiplier, int nbCooks, int deliveryTime,InterProcessCom &pipeCom);
     ~Kitchen();
 };

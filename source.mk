@@ -22,6 +22,7 @@ FLAGS		=		Tools/							\
 					kitchens/ 						\
 					Ingredients/ 					\
 					Clock/ 							\
+					Process/						\
 
 
 SRC     	=		main.cpp											\
@@ -38,6 +39,7 @@ SRC     	=		main.cpp											\
 					src/Reception/Reception.cpp							\
 					src/IPC/InterProcessCom.cpp							\
 					src/IPC/Operators.cpp								\
+					src/Process/Process.cpp								\
 					src/clock/clock.cpp\
 					src/cook/Cook.cpp\
 					src/kitchen/Kitchen.cpp\

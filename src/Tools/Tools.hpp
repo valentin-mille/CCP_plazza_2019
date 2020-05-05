@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <queue>
+#include <string>
 
 void displayUsage(void);
 bool isCommandLineError(int ac, char **av);
