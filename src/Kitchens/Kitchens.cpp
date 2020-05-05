@@ -96,7 +96,7 @@ bool Kitchens::cookPizza(const APizza &toPrepare, size_t &nbPizzas)
     return false;
 }
 
-void Kitchens::runCookingProcess(const std::string &pizza, size_t &nbPizzas)
+void Kitchens::runCookingProcess()
 {
     // Call the serialized operator to unpack the string into pizza
     // Add the clock inside the loop condition

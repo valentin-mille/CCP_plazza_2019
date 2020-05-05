@@ -52,7 +52,7 @@ class Kitchens
     void regenerateOneOfEachIngredients();
     bool isCookAvailable() const;
     bool cookPizza(const APizza &toPrepare, size_t &nbPizzas);
-    void runCookingProcess(const std::string &pizza, size_t  &nbPizzas);
+    void runCookingProcess();
 
   private:
     // Add the clock

@@ -27,7 +27,7 @@ class InterProcessCom {
 
         int createPipe();
         std::string readBuffer();
-        void readInformations();
+        std::string readInformations();
         void writeInformations(const std::string &infos);
         std::string pack(std::string const &order);
         std::string unpack(std::string const &order);

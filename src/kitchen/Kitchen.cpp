@@ -17,7 +17,7 @@ using food_ctor = std::unique_ptr<IFood> (*)(PizzaSize);
 std::vector<std::pair<PizzaType, food_ctor>> const food_creators = {
     {PizzaType::Regina, createFood<ReginaPizza>}};
 
-Kitchen::Kitchen(float multiplier, int nbCooks, int deliveryTime, const InterProcessCom &pipeCom)
+Kitchen::Kitchen(float multiplier, int nbCooks, int deliveryTime, InterProcessCom &pipeCom)
     : _multiplier(multiplier), _nbCooks(nbCooks), _deliveryTime(deliveryTime), _pipeCom(pipeCom)
 {
     _threadPool.addNewThread(_nbCooks, multiplier);

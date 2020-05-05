@@ -97,21 +97,27 @@ std::string Reception::getPizzaTypeSize(const std::string &currentPizza)
     return currentPizza.substr(0, pos - 1);
 }
 
-int Reception::createNewKitchenProcess(const std::string &toPrepare,
+int Reception::createNewKitchenProcess(const std::string &currentPizza,
                                        size_t &nbPizzas)
 {
     pid_t pid;
     InterProcessCom currentStream;
     Kitchen newKitchen(multiplier_, nbOfCooks_, deliveryTime_, currentStream);
+    std::string infos("OK");
 
-    pid = fork();
+    pid = Process::launchProcess();
     if (pid == 0) {
         // Call pack function with the new nbPizzas
-        newKitchen.runCookingProcess(toPrepare, nbPizzas);
+        newKitchen.update();
         // Exit to close the child process and destroy the kitchen
         exit(EXIT_SUCCESS);
     } else if (pid > 0) {
         streamCom_.emplace_back(currentStream);
+        while (infos == "OK") {
+            currentStream.writeInformations(currentPizza);
+            infos = currentStream.readInformations();
+            --nbPizzas;
+        }
     } else {
         std::cerr << "==> New Kitchen process failure: " << strerror(errno)
                   << std::endl;
@@ -134,13 +140,18 @@ int Reception::sendPizzasToKitchens()
     std::string currentPizza = pizzas_.front();
     size_t nbPizzas = getNumberOfPizza(currentPizza);
     std::string pizzaTypeSize(getPizzaTypeSize(currentPizza));
+    std::string infos;
 
     checkKitchensProcessus();
-    while (pizzas_.empty() == false) {
+    if (pizzas_.empty() == false) {
         while (nbPizzas > 0) {
             for (auto &pipeToKitchen : streamCom_) {
                 // Call pack function with the new nbPizzas
                 pipeToKitchen.writeInformations(currentPizza);
+                infos = pipeToKitchen.readInformations();
+                if (infos == "OK") {
+                    nbPizzas -= 1;
+                }
             }
             if (nbPizzas > 0) {
                 if (createNewKitchenProcess(currentPizza, nbPizzas)) {

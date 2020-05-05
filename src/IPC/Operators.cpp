@@ -11,6 +11,7 @@
 #include <iostream>
 #include "InterProcessCom.hpp"
 #include "../Tools/Tools.hpp"
+#include "APizza.hpp"
 
 // PACK / SERIALIZE
 std::string InterProcessCom::pack(std::string const &packedOrder)
@@ -22,7 +23,7 @@ std::string InterProcessCom::pack(std::string const &packedOrder)
     std::unordered_map<std::string, char>::iterator it;
     std::unordered_map<std::string, char> typeMap(
         {
-            {"regina", Regina},
+            {"regina", PizzaType::Regina},
             {"margarita", Margarita},
             {"americana", Americana},
             {"fantasia", Fantasia}
