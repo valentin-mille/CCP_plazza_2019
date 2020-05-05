@@ -43,7 +43,6 @@ bool isOrderValid(std::vector<std::string> order)
     std::vector<std::string> recipes = {"regina", "fantasia", "margarita", "americana"};
     std::vector<std::string> sizes = {"S", "M", "L", "XL", "XXL"};
 
-    std::for_each(order.at(0).begin(), order.at(0).end(), [](char & c) { c = ::tolower(c); });
     if (order.size() != 3)
         return (false);
     auto it = std::find(recipes.begin(), recipes.end(), order.at(0));
@@ -96,6 +95,7 @@ std::vector <std::string> handleMultipleCommands(std::string const &OrderInput, 
         OrderTokens.push_back(tmp2);
     }
     while (i < nbOrder) {
+        std::for_each(OrderTokens.at(i).at(0).begin(), OrderTokens.at(i).at(0).end(), [](char & c) { c = ::tolower(c); });
         if (isOrderValid(OrderTokens.at(i))) {
             strClean = createStringOrder(OrderTokens.at(i));
             result.push_back(strClean);
@@ -116,6 +116,7 @@ std::vector<std::string> CleanOrder(std::string const &OrderInput)
 
     if (nbOrder == 1) {
         tmp = tokeniseString(OrderInput, ' ');
+        std::for_each(tmp.at(0).begin(), tmp.at(0).end(), [](char & c) { c = ::tolower(c); });
         if (isOrderValid(tmp)) {
             strOrder = createStringOrder(tmp);
             result.push_back(strOrder);
