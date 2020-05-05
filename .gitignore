@@ -1,3 +1,18 @@
+# Personnal folder
+__IGNORE__/
+.vscode/
+.DS_Store/
+
+# Vim utils
+.clangd
+compile_commands.json
+
+# Unit test binary
+unit_tests
+
+# Binary
+plazza
+
 # Prerequisites
 *.d
 

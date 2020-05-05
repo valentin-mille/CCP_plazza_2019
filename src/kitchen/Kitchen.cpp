@@ -7,6 +7,7 @@
 
 #include "Kitchen.hpp"
 #include "Regina.hpp"
+#include "InterProcessCom.hpp"
 
 template <typename T_object> std::unique_ptr<IFood> createFood(PizzaSize size)
 {
@@ -18,8 +19,8 @@ using food_ctor = std::unique_ptr<IFood> (*)(PizzaSize);
 std::vector<std::pair<PizzaType, food_ctor>> const food_creators = {
     {PizzaType::Regina, createFood<ReginaPizza>}};
 
-Kitchen::Kitchen(float multiplier, int nbCooks, int deliveryTime)
-    : _multiplier(multiplier), _nbCooks(nbCooks), _deliveryTime(deliveryTime)
+Kitchen::Kitchen(float multiplier, int nbCooks, int deliveryTime, const InterProcessCom &pipeCom)
+    : _multiplier(multiplier), _nbCooks(nbCooks), _deliveryTime(deliveryTime), _pipeCom(pipeCom)
 {
     _threadPool.addNewThread(_nbCooks, multiplier);
     _refoundClock.reset();

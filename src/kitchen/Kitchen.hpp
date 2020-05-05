@@ -29,6 +29,7 @@ class Kitchen {
     int _deliveryTime;
     ThreadPool _threadPool;
     std::array<int, Ingredients::INGREDIENTS_COUNT> _stock;
+    const InterProcessCom &_pipeCom;
 
   public:
     void update();
@@ -36,6 +37,6 @@ class Kitchen {
     void printStock();
     int haveIngredients(std::vector<Ingredients>);
     void useIngredients(std::vector<Ingredients>);
-    Kitchen(float multiplier, int nbCooks, int deliveryTime);
+    Kitchen(float multiplier, int nbCooks, int deliveryTime,const InterProcessCom &pipeCom);
     ~Kitchen();
 };
