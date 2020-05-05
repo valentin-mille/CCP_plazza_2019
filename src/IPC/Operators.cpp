@@ -37,7 +37,6 @@ std::string InterProcessCom::pack(std::string const &packedOrder)
             {"XXL", XXL}
         }
     );
-
     // Find Pizza Type
     it = typeMap.find(VectOrder.at(0));
     if (it != typeMap.end()) {
@@ -51,16 +50,9 @@ std::string InterProcessCom::pack(std::string const &packedOrder)
     if (it != typeMap.end()) {
         tmp = std::to_string(it->second);
         result.append(tmp);
-        result.append("-");
         control++;
     }
-    // Find Pizza Number
-    tmp = std::to_string(getCountPizza(VectOrder.at(2)));
-    if (!tmp.empty()) {
-        result.append(tmp);
-        control++;
-    }
-    if (control == 3)
+    if (control == 2)
         return (result);
     return (nullptr);
 }
@@ -105,18 +97,10 @@ std::string InterProcessCom::unpack(std::string const &packedOrder)
     for (auto it : sizeMap) {
         if (it.first == tmp) {
             result.append(it.second);
-            result.append(" ");
             control++;
         }
     }
-    // Find Pizza Number
-    tmp = std::atoi(VectOrder.at(2).c_str());
-    if (tmp > 0) {
-        result.append("x");
-        result.append(std::to_string(tmp));
-        control++;
-    }
-    if (control == 3)
+    if (control == 2)
         return (result);
     return (nullptr);
 }
