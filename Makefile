@@ -20,7 +20,7 @@ CPPFLAGS 	=	$(addprefix -I./src/, $(FLAGS))
 
 $(NAME): $(OBJ)
 	@echo -e "\e[36;1m\nMAKE $(NAME)\n\e[0m"
-	@$(LD) $^ -o $@ $(CPPFLAGS) $(CXXFLAGS)
+	@$(LD) $(LDLIBS) $^ -o $@
 
 all:$(NAME)
 

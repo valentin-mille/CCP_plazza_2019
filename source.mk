@@ -5,11 +5,13 @@
 ## source for file
 ##
 
-CC			=		g++
+CXX			=		g++
 
-LD			=		$(CC)
+LD			=		$(CXX)
 
-CXXFLAGS  	=       -lpthread -Wall -Wextra -W -std=c++17
+CXXFLAGS  	=		-Wall -Wextra -W -std=c++17
+
+LDLIBS 		=		-lpthread
 
 FLAGS		=		Tools/							\
 					Reception/ 						\
