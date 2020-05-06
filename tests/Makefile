@@ -17,7 +17,7 @@ $(LD)				=		$(CC)
 
 CPPFLAGS			= 		$(addprefix -I../src/, $(FLAGS))
 
-LDFLAGS 			=		-lcriterion --coverage -lgcov
+LDFLAGS 			=		-lpthread -lcriterion --coverage -lgcov
 
 tests_run:	$(OBJ_TEST)
 	@$(LD) -o $(NAME_TEST) $(OBJ_TEST) $(LDFLAGS)

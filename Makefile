@@ -5,42 +5,33 @@
 ## Makefile
 ##
 
-SRC			=	main.cpp				\
-				clock/clock.cpp\
-				cook/Cook.cpp\
-				kitchen/Kitchen.cpp\
-				pizza/APizza.cpp\
-				pizza/Regina.cpp\
-				threadpool/ThreadPool.cpp\
-				driver.cpp											\
-				Parser/Parser.cpp								\
-				Tools/Usage.cpp									\
-				Tools/ParseCommandLine.cpp 						\
-				Tools/CleanOrder.cpp							\
-				Tools/getCountPizza.cpp							\
-				Tools/tokeniseString.cpp						\
-				Exception/Exception.cpp							\
-				Exception/ExceptionParser.cpp					\
-				Exception/ExceptionPlazza.cpp					\
-				Reception/Reception.cpp							\
-				IPC/InterProcessCom.cpp							\
-				IPC/Operators.cpp								\
-				Process/Process.cpp								\
+include source.mk
+
+GCV 		= 	gcovr
+GCVNAME 	= 	coverage.html
+GCVFLAGS 	= 	--html-details --html
+GCVEXCLUDE 	= 	--exclude tests/ --exclude gcovr/
 
 OBJ		=	$(addprefix ./src/, $(SRC:.cpp=.o))
 
 NAME		=	plazza
 
-override CXXFLAGS	+= -ggdb3 -Wall -pthread -Wextra -I./src/Launcher -I./src/Reception -I./src/Tools -I./src/Parser -I./src/driver -I./src/Process -I ./src/Exception -I ./src/IPC -I./src -I./src/clock -I./src/threadpool -I./src/cook -I./src/ingredient -I./src/kitchen -I ./src/pizza -std=c++17
+CPPFLAGS 	=	$(addprefix -I./src/, $(FLAGS))
 
 $(NAME): $(OBJ)
 	@echo -e "\e[36;1m\nMAKE $(NAME)\n\e[0m"
-	@$(CXX) $^ -o $@ $(CXXFLAGS)
+	@$(LD) $^ -o $@ $(CPPFLAGS) $(CXXFLAGS)
 
 all:$(NAME)
 
+tests_run:
+	@make tests_run -C tests/ --no-print-directory
+	@$(GCV) $(GCVEXCLUDE)
+	@$(GCV) -r ./ $(GCVFLAGS) -o $(GCVNAME) $(GCVEXCLUDE)
+
 clean:
 	@echo -e "\e[31;1mCLEANING OBJ: $(NAME)\e[0m"
+	@make clean -C tests/ --no-print-directory
 	@$(foreach var, $(OBJ), if [ -e $(var) ] ; then                         \
 		        printf "[\033[31;1m\xe2\x9c\x98\033[0m] $(var)\n"        \
 		        && rm -rf $(var) ; fi ;)
@@ -48,15 +39,17 @@ clean:
 
 fclean: clean
 	@echo -e "\033[31;1mCLEANING: $(NAME)\033[0m"
+	@make fclean -C tests/ --no-print-directory
 	@if [ -e $(NAME) ] ; then                                               \
 		        printf "[\033[31;1m\xe2\x9c\x98\033[0m] $(NAME)\n"       \
 		        && rm -f $(NAME) ; fi
 	@rm -f $(NAME) $(NAME_TESTS)
+	@rm -f *.html
 
 re:	fclean	all
 
 %.o:            %.cpp
 		@echo -e "[\033[32;1m\xe2\x9c\x93\033[0m] $<$(END) \033[31;1m\xe2\x9f\xb6\033[0m $@"
-		@$(CXX) $(CXXFLAGS) -o $@ -c $<
+		@$(LD) $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $<
 
-.PHONY:	all	clean	fclean	re
+.PHONY:	all	clean debug tests_run fclean re $(NAME)

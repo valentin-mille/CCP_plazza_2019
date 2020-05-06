@@ -9,7 +9,7 @@ CC			=		g++
 
 LD			=		$(CC)
 
-CXXFLAGS  	=       -Wall -Wextra -W -std=c++17 -pthread
+CXXFLAGS  	=       -lpthread -Wall -Wextra -W -std=c++17
 
 FLAGS		=		Tools/							\
 					Reception/ 						\
@@ -26,29 +26,29 @@ FLAGS		=		Tools/							\
 					threadpool/						\
 
 
-SRC     	=		main.cpp											\
-					driver.cpp											\
-					src/Parser/Parser.cpp								\
-					src/Tools/Usage.cpp									\
-					src/Tools/ParseCommandLine.cpp 						\
-					src/Tools/CleanOrder.cpp							\
-					src/Tools/getCountPizza.cpp							\
-					src/Tools/tokeniseString.cpp						\
-					src/Exception/Exception.cpp							\
-					src/Exception/ExceptionParser.cpp					\
-					src/Exception/ExceptionPlazza.cpp					\
-					src/Reception/Reception.cpp							\
-					src/IPC/InterProcessCom.cpp							\
-					src/IPC/Operators.cpp								\
-					src/Process/Process.cpp								\
-					src/clock/clock.cpp\
-					src/cook/Cook.cpp\
-					src/kitchen/Kitchen.cpp\
-					src/pizza/APizza.cpp\
-					src/pizza/Regina.cpp\
-					src/threadpool/ThreadPool.cpp\
+SRC     	=		main.cpp										\
+					driver.cpp										\
+					Parser/Parser.cpp								\
+					Tools/Usage.cpp									\
+					Tools/ParseCommandLine.cpp 						\
+					Tools/CleanOrder.cpp							\
+					Tools/getCountPizza.cpp							\
+					Tools/tokeniseString.cpp						\
+					Exception/Exception.cpp							\
+					Exception/ExceptionParser.cpp					\
+					Exception/ExceptionPlazza.cpp					\
+					Reception/Reception.cpp							\
+					IPC/InterProcessCom.cpp							\
+					IPC/Operators.cpp								\
+					Process/Process.cpp								\
+					clock/clock.cpp									\
+					cook/Cook.cpp									\
+					kitchen/Kitchen.cpp								\
+					pizza/APizza.cpp								\
+					pizza/Regina.cpp								\
+					threadpool/ThreadPool.cpp						\
 
-TEST 		=		testsParseCommandLine.cpp 							\
+TEST 		=		testsParseCommandLine.cpp 						\
 
-SRC_TEST	=		$(addprefix ../, $(filter-out main.cpp, $(SRC)))	\
+SRC_TEST	=		$(addprefix ../src/, $(filter-out main.cpp, $(SRC)))	\
 					$(addprefix src/, $(TEST))
