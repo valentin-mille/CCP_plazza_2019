@@ -6,6 +6,7 @@
 */
 
 #include "Reception.hpp"
+#include "InterProcessCom.hpp"
 
 Reception::Reception(float multiplier, int nbOfCooks, int deliveryTime)
     : multiplier_(multiplier),
@@ -19,7 +20,7 @@ void Reception::FillQueueOrder(std::vector<std::string> const &OrdersVect)
 {
     int size = OrdersVect.size();
 
-    for(int i = 0; i < size; i++ )
+    for (int i = 0; i < size; i++)
         pizzas_.push(OrdersVect.at(i));
 }
 
@@ -39,6 +40,7 @@ void Reception::parseOrder(std::string const &order)
         return;
     }
     FillQueueOrder(OrdersVect);
+    sendPizzasToKitchens();
 }
 
 bool Reception::launchShell()
@@ -70,9 +72,9 @@ void Reception::displayKitchensStatus()
     // print the number the current occupancy of the cooks, as well as theirs
     // stocks of ingredients
     for (size_t i = 0; i < streamCom_.size(); ++i) {
-        streamCom_[i].writeInformations("status");
+        streamCom_[i].writeToKitchenBuffer("status");
         Process::waitResponse(kitchensPid_[i]);
-        streamCom_[i].readInformations();
+        streamCom_[i].readReceptionBuffer();
     }
 }
 
@@ -101,20 +103,22 @@ int Reception::createNewKitchenProcess(const std::string &currentPizza,
     pid_t pid;
     InterProcessCom currentStream;
     Kitchen newKitchen(multiplier_, nbOfCooks_, deliveryTime_, currentStream);
-    std::string infos("OK");
+    std::string infos("OK\n");
 
     pid = Process::launchProcess();
     if (pid == 0) {
-        // Call pack function with the new nbPizzas
         newKitchen.update();
         // Exit to close the child process and destroy the kitchen
         exit(EXIT_SUCCESS);
     } else if (pid > 0) {
         streamCom_.emplace_back(currentStream);
         while (infos == "OK") {
-            currentStream.writeInformations(currentPizza);
-            infos = currentStream.readInformations();
+            currentStream.writeToKitchenBuffer(currentPizza);
+            infos = currentStream.readReceptionBuffer();
+            std::cout << "[INFOS] " << infos << std::endl;
             if (infos == "OK") {
+                std::cout << "===============>" << std::endl;
+                pizzas_.pop();
                 --nbPizzas;
             }
         }
@@ -141,20 +145,25 @@ int Reception::sendPizzasToKitchens()
     size_t nbPizzas = getNumberOfPizza(currentPizza);
     std::string pizzaTypeSize(getPizzaTypeSize(currentPizza));
     std::string infos;
+    std::string serializedOrder;
 
+    std::cout << "Nb Pizzas #1: " << nbPizzas << std::endl;
     checkKitchensProcessus();
     if (pizzas_.empty() == false) {
+        serializedOrder = InterProcessCom::pack(currentPizza);
+        std::cout << "Serialized order " << serializedOrder << std::endl;
         while (nbPizzas > 0) {
+            std::cout << "Nb Pizzas #2: " << nbPizzas << std::endl;
             for (auto &pipeToKitchen : streamCom_) {
-                // Call pack function with the new nbPizzas
-                pipeToKitchen.writeInformations(currentPizza);
-                infos = pipeToKitchen.readInformations();
+                pipeToKitchen.writeToKitchenBuffer(serializedOrder);
+                infos = pipeToKitchen.readReceptionBuffer();
                 if (infos == "OK") {
+                    pizzas_.pop();
                     nbPizzas -= 1;
                 }
             }
             if (nbPizzas > 0) {
-                if (createNewKitchenProcess(currentPizza, nbPizzas)) {
+                if (createNewKitchenProcess(serializedOrder, nbPizzas)) {
                     return 1;
                 }
             }

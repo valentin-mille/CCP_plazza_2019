@@ -66,7 +66,8 @@ void Kitchen::update()
             std::cout << "Log: kitchenClose" << std::endl;
             return;
         }
-        std::cout << "buffer : " << this->_pipeCom.readBuffer() << std::endl;
+        std::cout << "buffer : " << this->_pipeCom.readKitchenBuffer() << std::endl;
+        this->_pipeCom.writeToReceptionBuffer("OK");
         if (_refoundClock.getElapsedTime() >= _deliveryTime) {
             _stockMutex.lock();
             for (auto &ingredient: _stock)

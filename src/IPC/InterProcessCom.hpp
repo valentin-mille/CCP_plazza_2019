@@ -26,17 +26,22 @@ class InterProcessCom {
         ~InterProcessCom();
 
         int createPipe();
-        std::string readBuffer();
-        std::string readInformations();
-        void writeInformations(const std::string &infos);
-        std::string pack(std::string const &order);
-        std::string unpack(std::string const &order);
+        std::string readInformations(int fd);
+        std::string readReceptionBuffer();
+        std::string readKitchenBuffer();
+        void writeInformations(const std::string &infos, int fd);
+        void writeToKitchenBuffer(const std::string &infos);
+        void writeToReceptionBuffer(const std::string &infos);
+        static std::string pack(std::string const &order);
+        static std::string unpack(std::string const &order);
         // std::string operator<<(std::string const &order);
         // std::string operator>>(std::string const &order);
 
     private:
-        int fdWrite_;
-        int fdRead_;
+        int kitchenFdWrite_;
+        int kitchenFdRead_;
+        int receptionFdRead_;
+        int receptionFdWrite_;
 };
 
 #endif
