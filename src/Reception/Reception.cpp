@@ -18,7 +18,6 @@ Reception::Reception(float multiplier, int nbOfCooks, int deliveryTime)
 void Reception::FillQueueOrder(std::vector<std::string> const &OrdersVect)
 {
     int size = OrdersVect.size();
-    int i = 0;
 
     for(int i = 0; i < size; i++ )
         pizzas_.push(OrdersVect.at(i));
