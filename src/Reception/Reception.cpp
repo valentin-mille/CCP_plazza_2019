@@ -110,8 +110,10 @@ int Reception::createNewKitchenProcess(const std::string &currentPizza,
 
     pid = Process::launchProcess();
     if (pid == 0) {
-        Kitchen newKitchen(multiplier_, nbOfCooks_, deliveryTime_, currentStream);
-        newKitchen.update();
+        std::unique_ptr<Kitchen> newKitchen = std::make_unique<Kitchen>(
+            multiplier_, nbOfCooks_, deliveryTime_, currentStream);
+        newKitchen.get()->update();
+        newKitchen.reset();
         // Exit to close the child process and destroy the kitchen
         exit(EXIT_SUCCESS);
     } else if (pid > 0) {

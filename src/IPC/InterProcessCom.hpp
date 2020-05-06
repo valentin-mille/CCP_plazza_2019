@@ -14,6 +14,12 @@
 
 #include "../Tools/Tools.hpp"
 #include "IFood.hpp"
+#include "APizza.hpp"
+
+struct PizzaInf {
+    PizzaType type;
+    PizzaSize size;
+};
 
 class InterProcessCom {
 
@@ -35,6 +41,7 @@ class InterProcessCom {
         static std::string pack(std::string const &order);
         static std::string unpack(std::string const &order);
         static void printOutput(std::string const &toPrint);
+        static PizzaInf unpackPizzaInf(std::string const &order);
         // std::string operator<<(std::string const &order);
         // std::string operator>>(std::string const &order);
 

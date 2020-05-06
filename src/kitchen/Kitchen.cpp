@@ -7,7 +7,8 @@
 
 #include "Kitchen.hpp"
 
-template <typename T_object> std::unique_ptr<IFood> createFood(PizzaSize size)
+template <typename T_object>
+std::unique_ptr<IFood> createFood(PizzaSize size)
 {
     return std::make_unique<T_object>(size);
 }
@@ -17,13 +18,31 @@ using food_ctor = std::unique_ptr<IFood> (*)(PizzaSize);
 std::vector<std::pair<PizzaType, food_ctor>> const food_creators = {
     {PizzaType::Regina, createFood<ReginaPizza>}};
 
-Kitchen::Kitchen(float multiplier, int nbCooks, int deliveryTime, InterProcessCom &pipeCom)
-    : _multiplier(multiplier), _nbCooks(nbCooks), _deliveryTime(deliveryTime), _pipeCom(pipeCom)
+Kitchen::Kitchen(float multiplier,
+                 int nbCooks,
+                 int deliveryTime,
+                 InterProcessCom &pipeCom)
+    : _multiplier(multiplier),
+      _nbCooks(nbCooks),
+      _deliveryTime(deliveryTime),
+      _pipeCom(pipeCom),
+      _getPipeInf(true),
+      _threadPipe(nullptr)
 {
+    _threadPipe = std::make_unique<std::thread>(
+        std::thread([this]() { this->pipeComunication(); }));
     _threadPool.addNewThread(_nbCooks, multiplier);
     _refoundClock.reset();
-    for (auto &ingredient: _stock)
+    for (auto &ingredient : _stock)
         ingredient = 5;
+}
+
+void Kitchen::pipeComunication()
+{
+    while (_getPipeInf) {
+        PizzaInf inf = _pipeCom.unpackPizzaInf(this->_pipeCom.readKitchenBuffer());
+        newPizza(inf.type, inf.size);
+    }
 }
 
 int Kitchen::haveIngredients(std::vector<Ingredients> ingredients)
@@ -43,7 +62,9 @@ void Kitchen::useIngredients(std::vector<Ingredients> ingredients)
 
 void Kitchen::newPizza(PizzaType type, PizzaSize size)
 {
-    auto iter = std::find_if(food_creators.begin(), food_creators.end(),
+    auto iter = std::find_if(
+        food_creators.begin(),
+        food_creators.end(),
         [&](auto const &obj_creator) { return obj_creator.first == type; });
 
     if (iter == food_creators.end()) {
@@ -54,6 +75,9 @@ void Kitchen::newPizza(PizzaType type, PizzaSize size)
             _threadPool.addOnQueue(std::move(foodPtr)) == 0) {
             _inactivityClock.reset();
             useIngredients(ingredients);
+            this->_pipeCom.writeToReceptionBuffer("OK");
+        } else {
+            this->_pipeCom.writeToReceptionBuffer("KO");
         }
     }
 }
@@ -63,14 +87,11 @@ void Kitchen::update()
     std::cout << "Log: kitchenLaunch" << std::endl;
     while (1) {
         if (_inactivityClock.getElapsedTime() > 5000) {
-            std::cout << "Log: kitchenClose" << std::endl;
             return;
         }
-        std::cout << "buffer : " << this->_pipeCom.readKitchenBuffer() << std::endl;
-        this->_pipeCom.writeToReceptionBuffer("OK");
         if (_refoundClock.getElapsedTime() >= _deliveryTime) {
             _stockMutex.lock();
-            for (auto &ingredient: _stock)
+            for (auto &ingredient : _stock)
                 ingredient += 1;
             _refoundClock.reset();
             _stockMutex.unlock();
@@ -82,11 +103,14 @@ void Kitchen::update()
 void Kitchen::printStock()
 {
     std::cout << "-------------------STOCK-----------------------" << std::endl;
-    for (auto &ingredient: _stock)
+    for (auto &ingredient : _stock)
         std::cout << ingredient << std::endl;
     std::cout << "-----------------------------------------------" << std::endl;
 }
 
 Kitchen::~Kitchen()
 {
+    std::cout << "Log: kitchenClose" << std::endl;
+    _getPipeInf = false;
+    _threadPipe.get()->detach();
 }
