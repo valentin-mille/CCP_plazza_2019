@@ -6,6 +6,7 @@
 */
 
 #include "Kitchen.hpp"
+#include <mutex>
 
 template <typename T_object>
 std::unique_ptr<IFood> createFood(PizzaSize size)
@@ -29,24 +30,27 @@ Kitchen::Kitchen(float multiplier,
       _getPipeInf(true),
       _threadPipe(nullptr)
 {
-    _threadPipe = std::make_unique<std::thread>(
-        std::thread([this]() { this->pipeComunication(); }));
-    _threadPool.addNewThread(_nbCooks, multiplier);
     _refoundClock.reset();
     for (auto &ingredient : _stock)
         ingredient = 5;
+    _threadPool.addNewThread(_nbCooks, multiplier);
+    _threadPipe = std::make_unique<std::thread>(
+        std::thread([this]() { this->pipeComunication(); }));
 }
 
 void Kitchen::pipeComunication()
 {
     while (_getPipeInf) {
-        PizzaInf inf = _pipeCom.unpackPizzaInf(this->_pipeCom.readKitchenBuffer());
+        PizzaInf inf =
+            _pipeCom.unpackPizzaInf(this->_pipeCom.readKitchenBuffer());
         newPizza(inf.type, inf.size);
     }
 }
 
 int Kitchen::haveIngredients(std::vector<Ingredients> ingredients)
 {
+    std::lock_guard<std::mutex> lock(_stockMutex);
+
     for (size_t i = 0; i < ingredients.size(); i++) {
         if (_stock[ingredients[i]] <= 0)
             return 1;
@@ -56,8 +60,11 @@ int Kitchen::haveIngredients(std::vector<Ingredients> ingredients)
 
 void Kitchen::useIngredients(std::vector<Ingredients> ingredients)
 {
-    for (size_t i = 0; i < ingredients.size(); i++)
+    std::lock_guard<std::mutex> lock(_stockMutex);
+
+    for (size_t i = 0; i < ingredients.size(); i++) {
         _stock[ingredients[i]] -= 1;
+    }
 }
 
 void Kitchen::newPizza(PizzaType type, PizzaSize size)
@@ -102,6 +109,7 @@ void Kitchen::update()
 
 void Kitchen::printStock()
 {
+    std::lock_guard<std::mutex> lock(_stockMutex);
     std::cout << "-------------------STOCK-----------------------" << std::endl;
     for (auto &ingredient : _stock)
         std::cout << ingredient << std::endl;
