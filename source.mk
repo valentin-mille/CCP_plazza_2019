@@ -9,7 +9,7 @@ CC			=		g++
 
 LD			=		$(CC)
 
-CXXFLAGS  	=       -Wall -Wextra -W -std=c++17 -pthread -I include -I./src -I./src/clock -I./src/threadpool -I./src/cook -I./src/ingredient -I./src/kitchen -I ./src/pizza
+CXXFLAGS  	=       -Wall -Wextra -W -std=c++17 -pthread
 
 FLAGS		=		Tools/							\
 					Reception/ 						\
@@ -17,12 +17,13 @@ FLAGS		=		Tools/							\
 					Parser/ 						\
 					Exception/ 						\
 					IPC/							\
-					Cooks/ 							\
-					pizza/							\
-					kitchens/ 						\
-					Ingredients/ 					\
-					Clock/ 							\
 					Process/						\
+					cook/ 							\
+					kitchen/ 						\
+					pizza/ 							\
+					clock/							\
+					ingredient/ 					\
+					threadpool/						\
 
 
 SRC     	=		main.cpp											\
