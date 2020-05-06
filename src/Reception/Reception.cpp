@@ -30,9 +30,14 @@ void Reception::parseOrder(std::string const &order)
     std::string tmp;
     InterProcessCom process;
 
+    if (order.empty() || order == " ") {
+        std::cerr << "Error: Invalid Order" << std::endl;
+        return;
+    }
     OrdersVect = CleanOrder(order);
     if (OrdersVect.empty()) {
         std::cerr << "Error: Invalid Order" << std::endl;
+        return;
     }
     FillQueueOrder(OrdersVect);
 }
