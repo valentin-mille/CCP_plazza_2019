@@ -50,6 +50,6 @@ re:	fclean	all
 
 %.o:            %.cpp
 		@echo -e "[\033[32;1m\xe2\x9c\x93\033[0m] $<$(END) \033[31;1m\xe2\x9f\xb6\033[0m $@"
-		@$(LD) $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $<
+		@$(LD) $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $< $(LDLIBS)
 
 .PHONY:	all	clean debug tests_run fclean re $(NAME)
