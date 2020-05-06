@@ -9,9 +9,7 @@ CXX			=		g++
 
 LD			=		$(CXX)
 
-CXXFLAGS  	=		-Wall -Wextra -W -std=c++17
-
-LDLIBS 		=		-lpthread
+CXXFLAGS  	=		-lpthread -Wall -Wextra -W -std=c++17
 
 FLAGS		=		Tools/							\
 					Reception/ 						\
