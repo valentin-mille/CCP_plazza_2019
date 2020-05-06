@@ -105,6 +105,11 @@ void InterProcessCom::writeInformations(const std::string &infos, int fd)
     // release the locked mutex automatically at the end of the scope
 }
 
+void InterProcessCom::printOutput(std::string const &toPrint)
+{
+    std::cout << toPrint << std::endl;
+}
+
 void InterProcessCom::writeToKitchenBuffer(const std::string &infos)
 {
     this->writeInformations(infos, this->kitchenFdWrite_);

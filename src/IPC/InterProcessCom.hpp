@@ -34,6 +34,7 @@ class InterProcessCom {
         void writeToReceptionBuffer(const std::string &infos);
         static std::string pack(std::string const &order);
         static std::string unpack(std::string const &order);
+        static void printOutput(std::string const &toPrint);
         // std::string operator<<(std::string const &order);
         // std::string operator>>(std::string const &order);
 
