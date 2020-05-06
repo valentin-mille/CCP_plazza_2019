@@ -9,7 +9,8 @@
 
 enum Ingredients
 {
-    TOMATO = 0,
+    DOE = 0,
+    TOMATO,
     GRUYERE,
     MUSHROOMS,
     HAM,

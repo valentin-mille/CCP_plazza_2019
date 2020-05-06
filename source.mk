@@ -9,25 +9,25 @@ CC			=		g++
 
 LD			=		$(CC)
 
-CXXFLAGS  	=       -Wall -Wextra -W -std=c++17		\
+CXXFLAGS  	=       -Wall -Wextra -W -std=c++17 -pthread
 
 FLAGS		=		Tools/							\
 					Reception/ 						\
 					Launcher/ 						\
 					Parser/ 						\
 					Exception/ 						\
-					Pizza/							\
 					IPC/							\
-					Cooks/ 							\
-					Kitchens/ 						\
-					Ingredients/ 					\
-					Clock/ 							\
 					Process/						\
+					cook/ 							\
+					kitchen/ 						\
+					pizza/ 							\
+					clock/							\
+					ingredient/ 					\
+					threadpool/						\
 
 
 SRC     	=		main.cpp											\
 					driver.cpp											\
-					src/Clock/clock.cpp 								\
 					src/Parser/Parser.cpp								\
 					src/Tools/Usage.cpp									\
 					src/Tools/ParseCommandLine.cpp 						\
@@ -40,10 +40,13 @@ SRC     	=		main.cpp											\
 					src/Reception/Reception.cpp							\
 					src/IPC/InterProcessCom.cpp							\
 					src/IPC/Operators.cpp								\
-					src/Kitchens/Kitchens.cpp 							\
-					src/Pizza/APizza.cpp 								\
-					src/Cooks/Cooks.cpp									\
 					src/Process/Process.cpp								\
+					src/clock/clock.cpp\
+					src/cook/Cook.cpp\
+					src/kitchen/Kitchen.cpp\
+					src/pizza/APizza.cpp\
+					src/pizza/Regina.cpp\
+					src/threadpool/ThreadPool.cpp\
 
 TEST 		=		testsParseCommandLine.cpp 							\
 

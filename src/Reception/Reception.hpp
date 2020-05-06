@@ -13,10 +13,19 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <bits/posix_opt.h>
+#include <cerrno>
+#include <cstdlib>
+#include <cstring>
+#include <exception>
+#include <iostream>
+#include <iterator>
+#include <unistd.h>
 
 #include "APizza.hpp"
+#include "Kitchen.hpp"
 #include "InterProcessCom.hpp"
-#include "Kitchens.hpp"
+#include "Process.hpp"
 #include "Tools.hpp"
 
 class Reception

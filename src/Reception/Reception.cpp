@@ -5,21 +5,7 @@
 ** Reception.cpp
 */
 
-#include <bits/posix_opt.h>
-#include <cerrno>
-#include <cstdlib>
-#include <cstring>
-#include <exception>
-#include <iostream>
-#include <iterator>
-#include <queue>
-
-#include "APizza.hpp"
-#include "InterProcessCom.hpp"
-#include "Kitchens.hpp"
-#include "Process.hpp"
 #include "Reception.hpp"
-#include "Tools.hpp"
 
 Reception::Reception(float multiplier, int nbOfCooks, int deliveryTime)
     : multiplier_(multiplier),
@@ -32,16 +18,9 @@ Reception::Reception(float multiplier, int nbOfCooks, int deliveryTime)
 void Reception::FillQueueOrder(std::vector<std::string> const &OrdersVect)
 {
     int size = OrdersVect.size();
-    int i = 0;
 
-    if (size == 1) {
-        pizzas_.push(OrdersVect.at(0));
-    } else {
-        while (i < size) {
-            pizzas_.push(OrdersVect.at(i));
-            i++;
-        }
-    }
+    for(int i = 0; i < size; i++ )
+        pizzas_.push(OrdersVect.at(i));
 }
 
 void Reception::parseOrder(std::string const &order)
@@ -50,9 +29,14 @@ void Reception::parseOrder(std::string const &order)
     std::string tmp;
     InterProcessCom process;
 
+    if (order.empty() || order == " ") {
+        std::cerr << "Error: Invalid Order" << std::endl;
+        return;
+    }
     OrdersVect = CleanOrder(order);
     if (OrdersVect.empty()) {
         std::cerr << "Error: Invalid Order" << std::endl;
+        return;
     }
     FillQueueOrder(OrdersVect);
 }
@@ -116,13 +100,13 @@ int Reception::createNewKitchenProcess(const std::string &currentPizza,
 {
     pid_t pid;
     InterProcessCom currentStream;
-    Kitchens newKitchen(multiplier_, nbOfCooks_, deliveryTime_, currentStream);
+    Kitchen newKitchen(multiplier_, nbOfCooks_, deliveryTime_, currentStream);
     std::string infos("OK");
 
     pid = Process::launchProcess();
     if (pid == 0) {
         // Call pack function with the new nbPizzas
-        newKitchen.runCookingProcess();
+        newKitchen.update();
         // Exit to close the child process and destroy the kitchen
         exit(EXIT_SUCCESS);
     } else if (pid > 0) {
