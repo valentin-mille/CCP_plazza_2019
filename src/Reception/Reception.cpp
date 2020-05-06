@@ -139,25 +139,27 @@ void Reception::checkKitchensProcessus()
     for (size_t i = 0; i < kitchensPid_.size(); ++i) {
         if (Process::isProcessRunning(kitchensPid_[i])) {
             kitchensPid_.erase(kitchensPid_.begin() + i);
+            streamCom_.erase(streamCom_.begin() + i);
         }
     }
 }
 
 int Reception::sendPizzasToKitchens()
 {
+    InterProcessCom debug;
     std::string currentPizza = pizzas_.front();
-    InterProcessCom::printOutput(currentPizza);
+    debug.printOutput(currentPizza);
     size_t nbPizzas = getNumberOfPizza(currentPizza);
     std::string pizzaTypeSize(getPizzaTypeSize(currentPizza));
     std::string infos;
     std::string serializedOrder;
 
-    InterProcessCom::printOutput("Nb Pizzas #1:" + std::to_string(nbPizzas));
+    debug.printOutput("Nb Pizzas #1:" + std::to_string(nbPizzas));
     checkKitchensProcessus();
     serializedOrder = InterProcessCom::pack(currentPizza);
-    InterProcessCom::printOutput("Serialized order " + serializedOrder);
+    debug.printOutput("Serialized order " + serializedOrder);
     while (nbPizzas > 0) {
-        InterProcessCom::printOutput("Nb Pizzas #2: " + std::to_string(nbPizzas));
+        debug.printOutput("Nb Pizzas #2: " + std::to_string(nbPizzas));
         for (auto &pipeToKitchen : streamCom_) {
             pipeToKitchen.writeToKitchenBuffer(serializedOrder);
             infos = pipeToKitchen.readReceptionBuffer();

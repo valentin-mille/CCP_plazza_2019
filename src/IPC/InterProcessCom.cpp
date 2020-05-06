@@ -99,7 +99,7 @@ void InterProcessCom::writeInformations(const std::string &infos, int fd)
 
     finalStr += infos + "\n";
     std::cout << "Final str before sending: \"" << finalStr << "\""
-        << std::endl;
+              << std::endl;
     // Send the size of the data and data
     write(fd, finalStr.c_str(), finalStr.size());
     // release the locked mutex automatically at the end of the scope
@@ -107,6 +107,7 @@ void InterProcessCom::writeInformations(const std::string &infos, int fd)
 
 void InterProcessCom::printOutput(std::string const &toPrint)
 {
+    std::lock_guard<std::mutex> lock(mutex);
     std::cout << toPrint << std::endl;
 }
 
