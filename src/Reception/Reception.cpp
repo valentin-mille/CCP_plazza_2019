@@ -130,7 +130,9 @@ int Reception::createNewKitchenProcess(const std::string &currentPizza,
         while (infos == "OK") {
             currentStream.writeInformations(currentPizza);
             infos = currentStream.readInformations();
-            --nbPizzas;
+            if (infos == "OK") {
+                --nbPizzas;
+            }
         }
     } else {
         std::cerr << "==> New Kitchen process failure: " << strerror(errno)
