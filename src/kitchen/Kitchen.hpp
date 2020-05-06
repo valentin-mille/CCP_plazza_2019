@@ -32,9 +32,12 @@ class Kitchen {
     ThreadPool _threadPool;
     std::array<int, Ingredients::INGREDIENTS_COUNT> _stock;
     InterProcessCom &_pipeCom;
+    bool _getPipeInf;
+    std::unique_ptr<std::thread> _threadPipe;
 
   public:
     void update();
+    void pipeComunication();
     void newPizza(PizzaType type, PizzaSize size);
     void printStock();
     int haveIngredients(std::vector<Ingredients>);

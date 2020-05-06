@@ -26,6 +26,7 @@ void Cook::update()
 {
     std::unique_lock<std::mutex> lock(_queueMutex, std::defer_lock);
     IFood *foodRef;
+    _working = true;
 
     while (_working) {
         lock.lock();
@@ -52,7 +53,6 @@ void Cook::update()
 
 void Cook::initThread()
 {
-    _working = true;
     _thread = std::make_unique<std::thread>(
         std::thread([this]() { this->update(); }));
 }

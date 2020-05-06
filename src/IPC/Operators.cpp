@@ -105,3 +105,13 @@ std::string InterProcessCom::unpack(std::string const &packedOrder)
         return (result);
     return (nullptr);
 }
+
+PizzaInf InterProcessCom::unpackPizzaInf(std::string const &packedOrder)
+{
+    PizzaInf inf;
+    std::vector <std::string> VectOrder = tokeniseString(packedOrder, '-');
+
+    inf.type = static_cast<PizzaType>(std::atoi(VectOrder.at(0).c_str()));
+    inf.size = static_cast<PizzaSize>(std::atoi(VectOrder.at(1).c_str()));
+    return (inf);
+}
