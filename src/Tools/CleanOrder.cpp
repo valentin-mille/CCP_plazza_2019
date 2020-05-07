@@ -18,7 +18,15 @@ size_t findNbOrder(std::string const &input)
 {
     size_t result = 0;
 
-    result = std::count(input.begin(), input.end(), ';') + 1;
+    std::vector<std::string> tokens;
+    std::stringstream check1(input);
+    std::string intermediate;
+
+    while(getline(check1, intermediate, ';'))
+    {
+        tokens.push_back(intermediate);
+    }
+    result = tokens.size();
     return (result);
 }
 
