@@ -7,16 +7,17 @@
 
 #pragma once
 
-#include <condition_variable>
 #include "Cook.hpp"
-#include <memory>
-#include <mutex>
 #include "IFood.hpp"
 #include "Regina.hpp"
+#include <condition_variable>
+#include <memory>
+#include <mutex>
 #include <queue>
 #include <vector>
 
-class ThreadPool {
+class ThreadPool
+{
   private:
     std::condition_variable _conditional;
     std::vector<Cook> _Cooks;
@@ -24,6 +25,7 @@ class ThreadPool {
     std::mutex _foodMutex;
 
   public:
+    int haveFreeCook();
     std::vector<Cook> const &getCooks() const;
     void addNewThread(size_t nbNew, float multiplier);
     int addOnQueue(std::unique_ptr<IFood> food);
