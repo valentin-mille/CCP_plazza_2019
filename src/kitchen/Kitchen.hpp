@@ -37,6 +37,7 @@ class Kitchen
     std::array<int, Ingredients::INGREDIENTS_COUNT> _stock;
     InterProcessCom &_pipeCom;
     bool _getPipeInf;
+    bool _workingState;
     std::unique_ptr<std::thread> _threadPipe;
 
   public:

@@ -72,7 +72,6 @@ bool Reception::launchShell()
         std::cout << "> ";
         std::getline(std::cin, input);
         if (std::cin.eof() || input == "exit" || input == "quit") {
-            std::cout << "--- quit pizzeria --- " << std::endl;
             isRunning = false;
             break;
         }

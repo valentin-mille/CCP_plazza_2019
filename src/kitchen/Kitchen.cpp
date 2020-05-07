@@ -32,6 +32,7 @@ Kitchen::Kitchen(float multiplier,
       _deliveryTime(deliveryTime),
       _pipeCom(pipeCom),
       _getPipeInf(true),
+      _workingState(true),
       _threadPipe(nullptr)
 {
     _refoundClock.reset();
@@ -62,6 +63,9 @@ void Kitchen::pipeComunication()
         if (buffer == "status") {
             kitchenStatus();
             this->_pipeCom.writeToReceptionBuffer("OK");
+        } else if (buffer == "exit") {
+            this->_workingState = false;
+            return;
         } else {
             PizzaInf inf = _pipeCom.unpackPizzaInf(buffer);
             newPizza(inf.type, inf.size);
@@ -125,8 +129,7 @@ int Kitchen::inactivityCheck()
 
 void Kitchen::update()
 {
-    std::cout << "Log: kitchenLaunch" << std::endl;
-    while (1) {
+    while (_workingState) {
         if (inactivityCheck() == 1) {
             return;
         }
@@ -163,7 +166,7 @@ void Kitchen::printStock()
 
 Kitchen::~Kitchen()
 {
-    std::cout << "Log: kitchenClose" << std::endl;
     _getPipeInf = false;
     _threadPipe.get()->detach();
+    this->_pipeCom.writeToReceptionBuffer("OK");
 }
