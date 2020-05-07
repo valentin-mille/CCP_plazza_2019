@@ -7,6 +7,7 @@
 
 #include "Reception.hpp"
 #include "InterProcessCom.hpp"
+#include "Process.hpp"
 #include <cstdlib>
 #include <string>
 
@@ -27,6 +28,7 @@ Reception::~Reception()
 
     for (size_t i = 0; i < nbProcess; ++i) {
         streamCom_[i].writeToKitchenBuffer("exit");
+        Process::waitResponse(kitchensPid_[i]);
     }
 }
 
