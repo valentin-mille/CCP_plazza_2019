@@ -67,10 +67,10 @@ bool Reception::launchShell()
 
     shellActive_ = true;
     while (isRunning) {
-        std::cout << "> ";
+        std::cout<< "> ";
         std::getline(std::cin, input);
         if (std::cin.eof() || input == "exit" || input == "quit") {
-            std::cout << "--- quit pizzeria --- " << std::endl;
+            std::cout<< "--- quit pizzeria --- " << std::endl;
             isRunning = false;
             break;
         }
@@ -131,7 +131,7 @@ int Reception::createNewKitchenProcess(const std::string &currentPizza,
             multiplier_, nbOfCooks_, deliveryTime_, currentStream);
         newKitchen.get()->update();
         newKitchen.reset();
-        std::cout << "====> END OF KITCHEN" << std::endl;
+        std::cout<< "====> END OF KITCHEN" << std::endl;
         // Exit to close the child process and destroy the kitchen
         exit(EXIT_SUCCESS);
     } else if (pid > 0) {

@@ -110,7 +110,7 @@ void InterProcessCom::writeInformations(const std::string &infos, int fd)
 void InterProcessCom::printOutput(std::string const &toPrint)
 {
     std::lock_guard<std::mutex> lock(mutex);
-    std::cout << toPrint << std::endl;
+    std::cout<< toPrint << std::endl;
 }
 
 void InterProcessCom::writeToKitchenBuffer(const std::string &infos)

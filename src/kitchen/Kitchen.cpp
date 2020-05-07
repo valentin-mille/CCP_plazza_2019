@@ -125,7 +125,7 @@ int Kitchen::inactivityCheck()
 
 void Kitchen::update()
 {
-    std::cout << "Log: kitchenLaunch" << std::endl;
+    std::cout<< "Log: kitchenLaunch" << std::endl;
     while (1) {
         if (inactivityCheck() == 1) {
             return;
@@ -163,7 +163,7 @@ void Kitchen::printStock()
 
 Kitchen::~Kitchen()
 {
-    std::cout << "Log: kitchenClose" << std::endl;
+    std::cout<< "Log: kitchenClose" << std::endl;
     _getPipeInf = false;
     _threadPipe.get()->detach();
 }

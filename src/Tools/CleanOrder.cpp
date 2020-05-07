@@ -108,7 +108,7 @@ std::vector <std::string> handleMultipleCommands(std::string const &OrderInput, 
             strClean = createStringOrder(OrderTokens.at(i));
             result.push_back(strClean);
         } else {
-            std::cout << "One order is invalid" << std::endl;
+            std::cout<< "One order is invalid" << std::endl;
         }
         i++;
     }

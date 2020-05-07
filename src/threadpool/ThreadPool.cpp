@@ -29,10 +29,10 @@ int ThreadPool::addOnQueue(std::unique_ptr<IFood> food)
         std::lock_guard<std::mutex> lock(_foodMutex);
         _foods.push(std::move(food));
         _conditional.notify_one();
-        std::cout << "Log: Kitchen-accepted"<< _foods.size() << " on Queue;" << std::endl;
+        std::cout<< "Log: Kitchen-accepted"<< _foods.size() << " on Queue;" << std::endl;
         return 0;
     } else {
-        std::cout << "Log: Kitchen-Full" << std::endl;
+        std::cout<< "Log: Kitchen-Full" << std::endl;
         return 1;
     }
 }
