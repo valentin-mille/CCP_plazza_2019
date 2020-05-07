@@ -7,6 +7,7 @@
 
 #include "Reception.hpp"
 #include "InterProcessCom.hpp"
+#include "Process.hpp"
 #include <cstdlib>
 #include <string>
 
@@ -27,6 +28,7 @@ Reception::~Reception()
 
     for (size_t i = 0; i < nbProcess; ++i) {
         streamCom_[i].writeToKitchenBuffer("exit");
+        Process::waitResponse(kitchensPid_[i]);
     }
 }
 
@@ -89,8 +91,6 @@ bool Reception::getShellActivity()
 
 void Reception::displayKitchensStatus()
 {
-    // print the number the current occupancy of the cooks, as well as theirs
-    // stocks of ingredients
     checkKitchensProcessus();
     for (size_t i = 0; i < streamCom_.size(); ++i) {
         streamCom_[i].writeToKitchenBuffer("status");
