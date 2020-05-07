@@ -15,9 +15,17 @@ void ThreadPool::addNewThread(size_t nbNew, float multiplier)
         _Cooks[i].initThread();
 }
 
+int ThreadPool::haveFreeCook()
+{
+    for (size_t i = 0; i < _Cooks.size(); i++)
+        if (_Cooks[i].isBusy() == 0)
+            return 0;
+    return 1;
+}
+
 int ThreadPool::addOnQueue(std::unique_ptr<IFood> food)
 {
-    if (_foods.size() < _Cooks.size()) {
+    if ( haveFreeCook() == 0 || _foods.size() < _Cooks.size()) {
         std::lock_guard<std::mutex> lock(_foodMutex);
         _foods.push(std::move(food));
         _conditional.notify_one();
