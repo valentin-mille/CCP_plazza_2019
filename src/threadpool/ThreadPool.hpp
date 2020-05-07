@@ -24,6 +24,7 @@ class ThreadPool {
     std::mutex _foodMutex;
 
   public:
+    std::vector<Cook> const &getCooks() const;
     void addNewThread(size_t nbNew, float multiplier);
     int addOnQueue(std::unique_ptr<IFood> food);
 

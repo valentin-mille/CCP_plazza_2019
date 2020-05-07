@@ -19,6 +19,7 @@
 
 class Cook {
   private:
+    bool _busy;
     bool _working;
     float _multiplier;
     std::queue<std::unique_ptr<IFood>> &_queueRef;
@@ -27,6 +28,7 @@ class Cook {
     std::unique_ptr<std::thread> _thread;
 
   public:
+    bool isBusy() const;
     void initThread();
     std::thread &getThread();
     void setWorkingState(bool workingState);

@@ -89,11 +89,23 @@ void Kitchen::newPizza(PizzaType type, PizzaSize size)
     }
 }
 
+int Kitchen::inactivityCheck()
+{
+    std::vector<Cook> const &cooks = _threadPool.getCooks();
+    for (size_t i = 0; i < cooks.size(); i++) {
+        if (cooks[i].isBusy() == true)
+            return 0;
+    }
+    if (_inactivityClock.getElapsedTime() > 5000)
+        return 1;
+    return 0;
+}
+
 void Kitchen::update()
 {
     std::cout << "Log: kitchenLaunch" << std::endl;
     while (1) {
-        if (_inactivityClock.getElapsedTime() > 5000) {
+        if (inactivityCheck() == 1) {
             return;
         }
         if (_refoundClock.getElapsedTime() >= _deliveryTime) {

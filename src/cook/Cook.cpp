@@ -41,14 +41,20 @@ void Cook::update()
         _queueRef.pop();
         lock.unlock();
         _conditionalRef.notify_one();
+        _busy = true;
         std::cout << "Log: Cook-unLockQueue" << std::endl;
-
         std::cout << "Log: Pizza-start-cooking " << foodRef->getTypeString() << " " << foodRef->getSizeString() << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(
             (int)(foodRef->getCookingTime() * _multiplier)));
+        _busy = false;
         std::cout << "Log: Pizza-Finish" << std::endl;
     }
     std::cout << "Log: Cook-leave" << std::endl;
+}
+
+bool Cook::isBusy() const
+{
+    return _busy;
 }
 
 void Cook::initThread()
