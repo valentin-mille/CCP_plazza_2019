@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 #include <mutex>
 #include <stdio.h>
@@ -32,11 +33,11 @@ int InterProcessCom::createPipe()
     int pfdsKitchen[2];
 
     if (pipe(pfdsReception) == -1) {
-        std::cerr << "==> Reception pipe fatal error" << std::endl;
+        std::cerr << "==> Reception pipe fatal error: " << std::strerror(errno) << std::endl;
         return 1;
     }
     if (pipe(pfdsKitchen) == -1) {
-        std::cerr << "==> Kitchen pipe fatal error" << std::endl;
+        std::cerr << "==> Kitchen pipe fatal error: " << std::strerror(errno) << std::endl;
         return 1;
     }
     this->receptionFdRead_ = pfdsReception[0];
