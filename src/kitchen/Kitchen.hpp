@@ -13,15 +13,16 @@
 #include <thread>
 #include <vector>
 
-#include <ThreadPool.hpp>
-#include <clock.hpp>
-#include <Cook.hpp>
-#include "Ingredients.hpp"
 #include "IFood.hpp"
+#include "Ingredients.hpp"
 #include "InterProcessCom.hpp"
 #include "Regina.hpp"
+#include <Cook.hpp>
+#include <ThreadPool.hpp>
+#include <clock.hpp>
 
-class Kitchen {
+class Kitchen
+{
   private:
     std::mutex _stockMutex;
     Clock _inactivityClock;
@@ -36,12 +37,16 @@ class Kitchen {
     std::unique_ptr<std::thread> _threadPipe;
 
   public:
+    int inactivityCheck();
     void update();
     void pipeComunication();
     void newPizza(PizzaType type, PizzaSize size);
     void printStock();
     int haveIngredients(std::vector<Ingredients>);
     void useIngredients(std::vector<Ingredients>);
-    Kitchen(float multiplier, int nbCooks, int deliveryTime, InterProcessCom &pipeCom);
+    Kitchen(float multiplier,
+            int nbCooks,
+            int deliveryTime,
+            InterProcessCom &pipeCom);
     ~Kitchen();
 };

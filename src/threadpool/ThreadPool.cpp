@@ -29,6 +29,11 @@ int ThreadPool::addOnQueue(std::unique_ptr<IFood> food)
     }
 }
 
+std::vector<Cook> const& ThreadPool::getCooks() const
+{
+    return _Cooks;
+}
+
 ThreadPool::ThreadPool()
 {
 }
