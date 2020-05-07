@@ -95,7 +95,7 @@ void Reception::displayKitchensStatus()
     checkKitchensProcessus();
     for (size_t i = 0; i < streamCom_.size(); ++i) {
         streamCom_[i].writeToKitchenBuffer("status");
-        //streamCom_[i].readReceptionBuffer();
+        streamCom_[i].readReceptionBuffer();
     }
 }
 
