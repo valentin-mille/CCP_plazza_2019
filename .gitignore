@@ -5,6 +5,7 @@ __IGNORE__/
 
 # Vim utils
 .clangd
+input.txt
 compile_commands.json
 
 # Unit test binary
