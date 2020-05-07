@@ -46,6 +46,9 @@ SRC     	=		main.cpp										\
 					kitchen/Kitchen.cpp								\
 					pizza/APizza.cpp								\
 					pizza/Regina.cpp								\
+					pizza/Americana.cpp								\
+					pizza/Margarita.cpp								\
+					pizza/Fantasia.cpp								\
 					threadpool/ThreadPool.cpp						\
 
 TEST 		=		testsParseCommandLine.cpp 						\

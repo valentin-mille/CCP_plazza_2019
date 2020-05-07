@@ -13,9 +13,12 @@
 #include <thread>
 #include <vector>
 
+#include "Americana.hpp"
+#include "Fantasia.hpp"
 #include "IFood.hpp"
 #include "Ingredients.hpp"
 #include "InterProcessCom.hpp"
+#include "Margarita.hpp"
 #include "Regina.hpp"
 #include <Cook.hpp>
 #include <ThreadPool.hpp>
@@ -37,6 +40,7 @@ class Kitchen
     std::unique_ptr<std::thread> _threadPipe;
 
   public:
+    void kitchenStatus();
     int inactivityCheck();
     void update();
     void pipeComunication();

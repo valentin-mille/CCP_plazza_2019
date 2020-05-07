@@ -7,6 +7,7 @@
 
 #include "Kitchen.hpp"
 #include <mutex>
+#include <string>
 
 template <typename T_object>
 std::unique_ptr<IFood> createFood(PizzaSize size)
@@ -17,7 +18,10 @@ std::unique_ptr<IFood> createFood(PizzaSize size)
 using food_ctor = std::unique_ptr<IFood> (*)(PizzaSize);
 
 std::vector<std::pair<PizzaType, food_ctor>> const food_creators = {
-    {PizzaType::Regina, createFood<ReginaPizza>}};
+    {PizzaType::Regina, createFood<ReginaPizza>},
+    {PizzaType::Margarita, createFood<MargaritaPizza>},
+    {PizzaType::Americana, createFood<AmericanaPizza>},
+    {PizzaType::Fantasia, createFood<FantasiaPizza>}};
 
 Kitchen::Kitchen(float multiplier,
                  int nbCooks,
@@ -38,12 +42,30 @@ Kitchen::Kitchen(float multiplier,
         std::thread([this]() { this->pipeComunication(); }));
 }
 
+void Kitchen::kitchenStatus()
+{
+    std::vector<Cook> const &cooks = _threadPool.getCooks();
+    std::string state;
+
+    for (size_t i = 0; i < cooks.size(); i++) {
+        state = (cooks[i].isBusy() == 1) ? "busy" : "free";
+        _pipeCom.printOutput("Cook " + std::to_string(i) + ":" + state);
+    }
+    printStock();
+}
+
 void Kitchen::pipeComunication()
 {
+    std::string buffer;
     while (_getPipeInf) {
-        PizzaInf inf =
-            _pipeCom.unpackPizzaInf(this->_pipeCom.readKitchenBuffer());
-        newPizza(inf.type, inf.size);
+        buffer = this->_pipeCom.readKitchenBuffer();
+        if (buffer == "status") {
+            kitchenStatus();
+            this->_pipeCom.writeToReceptionBuffer("OK");
+        } else {
+            PizzaInf inf = _pipeCom.unpackPizzaInf(buffer);
+            newPizza(inf.type, inf.size);
+        }
     }
 }
 
@@ -114,7 +136,6 @@ void Kitchen::update()
                 ingredient += 1;
             _refoundClock.reset();
             _stockMutex.unlock();
-            printStock();
         }
     }
 }
@@ -122,10 +143,22 @@ void Kitchen::update()
 void Kitchen::printStock()
 {
     std::lock_guard<std::mutex> lock(_stockMutex);
-    std::cout << "-------------------STOCK-----------------------" << std::endl;
-    for (auto &ingredient : _stock)
-        std::cout << ingredient << std::endl;
-    std::cout << "-----------------------------------------------" << std::endl;
+    std::array<std::string, INGREDIENTS_COUNT> ingredientString =
+    { {"DOE",
+       "TOMATO",
+       "GRUYERE",
+       "MUSHROOMS",
+       "HAM",
+       "STEACK",
+       "EGGPLANT",
+       "GOAT_CHEESE",
+       "CHIEF_LOVE"} };
+
+    _pipeCom.printOutput("-------------------STOCK-----------------------");
+    for (size_t i = 0; i < _stock.size(); i++) {
+        _pipeCom.printOutput(std::to_string(_stock[i]) + " :" + ingredientString[i]);
+    }
+    _pipeCom.printOutput("------------------------------------------------");
 }
 
 Kitchen::~Kitchen()
