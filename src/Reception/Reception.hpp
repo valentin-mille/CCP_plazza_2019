@@ -32,7 +32,7 @@ class Reception
 {
   public:
     Reception(float multiplier, int nbOfCooks, int deliveryTime_);
-    ~Reception() = default;
+    ~Reception();
     bool launchShell();
     bool getShellActivity();
     // bool isOrderValid();

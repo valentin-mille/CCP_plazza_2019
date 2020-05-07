@@ -21,6 +21,15 @@ Reception::Reception(float multiplier, int nbOfCooks, int deliveryTime)
 {
 }
 
+Reception::~Reception()
+{
+    size_t nbProcess = streamCom_.size();
+
+    for (size_t i = 0; i < nbProcess; ++i) {
+        streamCom_[i].writeToKitchenBuffer("exit");
+    }
+}
+
 void Reception::FillQueueOrder(std::vector<std::string> const &OrdersVect)
 {
     int size = OrdersVect.size();
@@ -44,6 +53,7 @@ void Reception::parseOrder(std::string const &order)
         std::cerr << "Error: Invalid Order" << std::endl;
         return;
     }
+
     FillQueueOrder(OrdersVect);
     if (pizzas_.empty() == false) {
         sendPizzasToKitchens();
@@ -64,7 +74,11 @@ bool Reception::launchShell()
             isRunning = false;
             break;
         }
-        parseOrder(input);
+        if (input == "status") {
+            displayKitchensStatus();
+        } else {
+            parseOrder(input);
+        }
     }
     return (true);
 }
@@ -78,10 +92,10 @@ void Reception::displayKitchensStatus()
 {
     // print the number the current occupancy of the cooks, as well as theirs
     // stocks of ingredients
+    checkKitchensProcessus();
     for (size_t i = 0; i < streamCom_.size(); ++i) {
         streamCom_[i].writeToKitchenBuffer("status");
-        Process::waitResponse(kitchensPid_[i]);
-        streamCom_[i].readReceptionBuffer();
+        //streamCom_[i].readReceptionBuffer();
     }
 }
 
@@ -132,7 +146,7 @@ int Reception::createNewKitchenProcess(const std::string &currentPizza,
             }
         }
         debug.printOutput("==> End of kitchens created: " +
-                                  std::to_string(nbPizzas));
+                          std::to_string(nbPizzas));
     } else {
         std::cerr << "==> New Kitchen process failure: " << strerror(errno)
                   << std::endl;
@@ -145,7 +159,8 @@ void Reception::checkKitchensProcessus()
 {
     size_t i = 0;
 
-    debug.printOutput("===> Nb kitchen processes " + std::to_string(kitchensPid_.size()));
+    debug.printOutput("===> Nb kitchen processes " +
+                      std::to_string(kitchensPid_.size()));
     while (i < kitchensPid_.size()) {
         debug.printOutput("==> Kitchen processes " + std::to_string(i));
         if (Process::isProcessRunning(kitchensPid_[i]) == false) {
