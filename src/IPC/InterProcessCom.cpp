@@ -49,6 +49,7 @@ int InterProcessCom::createPipe()
 std::string InterProcessCom::readInformations(int fd)
 {
     // The reception has to send a "[1...9][0...9]*[-]" string to work
+    std::lock_guard<std::mutex> lock(mutex);
     bool process = true;
     char buf[BUFFER_SIZE + 1];
     char *end = NULL;
@@ -75,19 +76,17 @@ std::string InterProcessCom::readInformations(int fd)
 
 std::string InterProcessCom::readReceptionBuffer()
 {
-    std::lock_guard<std::mutex> lock(mutex);
     std::string buffer = this->readInformations(this->receptionFdRead_);
 
-    std::cout << "Read result: \"" << buffer << "\"" << std::endl;
+    printOutput("Reception buffer \"" + buffer + "\"");
     return buffer;
 }
 
 std::string InterProcessCom::readKitchenBuffer()
 {
-    std::lock_guard<std::mutex> lock(mutex);
     std::string buffer = this->readInformations(this->kitchenFdRead_);
 
-    std::cout << "Read result: \"" << buffer << "\"" << std::endl;
+    printOutput("Kitchen buffer \"" + buffer + "\"");
     return buffer;
 }
 
@@ -98,8 +97,6 @@ void InterProcessCom::writeInformations(const std::string &infos, int fd)
     std::string finalStr;
 
     finalStr += infos + "\n";
-    std::cout << "Final str before sending: \"" << finalStr << "\""
-              << std::endl;
     // Send the size of the data and data
     write(fd, finalStr.c_str(), finalStr.size());
     // release the locked mutex automatically at the end of the scope
@@ -113,11 +110,13 @@ void InterProcessCom::printOutput(std::string const &toPrint)
 
 void InterProcessCom::writeToKitchenBuffer(const std::string &infos)
 {
+    printOutput("buffer \"" + infos + "\" written to Kitchen");
     this->writeInformations(infos, this->kitchenFdWrite_);
 }
 
 void InterProcessCom::writeToReceptionBuffer(const std::string &infos)
 {
+    printOutput("buffer \"" + infos + "\" written to Reception");
     this->writeInformations(infos, this->receptionFdWrite_);
 }
 
