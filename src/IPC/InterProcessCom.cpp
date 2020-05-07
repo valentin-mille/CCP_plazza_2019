@@ -25,6 +25,10 @@ InterProcessCom::InterProcessCom()
 
 InterProcessCom::~InterProcessCom()
 {
+    close(this->kitchenFdRead_);
+    close(this->kitchenFdWrite_);
+    close(this->receptionFdRead_);
+    close(this->receptionFdWrite_);
 }
 
 int InterProcessCom::createPipe()
