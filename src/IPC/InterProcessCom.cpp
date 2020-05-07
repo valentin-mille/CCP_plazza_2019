@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <cstdio>
-#include <cstring>
 #include <iostream>
 #include <mutex>
 #include <stdio.h>
@@ -25,10 +24,6 @@ InterProcessCom::InterProcessCom()
 
 InterProcessCom::~InterProcessCom()
 {
-    close(this->kitchenFdRead_);
-    close(this->kitchenFdWrite_);
-    close(this->receptionFdRead_);
-    close(this->receptionFdWrite_);
 }
 
 int InterProcessCom::createPipe()
@@ -37,11 +32,11 @@ int InterProcessCom::createPipe()
     int pfdsKitchen[2];
 
     if (pipe(pfdsReception) == -1) {
-        std::cerr << "==> Reception pipe fatal error: " << std::strerror(errno) << std::endl;
+        std::cerr << "==> Reception pipe fatal error" << std::endl;
         return 1;
     }
     if (pipe(pfdsKitchen) == -1) {
-        std::cerr << "==> Kitchen pipe fatal error: " << std::strerror(errno) << std::endl;
+        std::cerr << "==> Kitchen pipe fatal error" << std::endl;
         return 1;
     }
     this->receptionFdRead_ = pfdsReception[0];
@@ -54,7 +49,6 @@ int InterProcessCom::createPipe()
 std::string InterProcessCom::readInformations(int fd)
 {
     // The reception has to send a "[1...9][0...9]*[-]" string to work
-    std::lock_guard<std::mutex> lock(mutex);
     bool process = true;
     char buf[BUFFER_SIZE + 1];
     char *end = NULL;
@@ -81,17 +75,17 @@ std::string InterProcessCom::readInformations(int fd)
 
 std::string InterProcessCom::readReceptionBuffer()
 {
+    std::lock_guard<std::mutex> lock(mutex);
     std::string buffer = this->readInformations(this->receptionFdRead_);
 
-    printOutput("Reception buffer \"" + buffer + "\"");
     return buffer;
 }
 
 std::string InterProcessCom::readKitchenBuffer()
 {
+    std::lock_guard<std::mutex> lock(mutex);
     std::string buffer = this->readInformations(this->kitchenFdRead_);
 
-    printOutput("Kitchen buffer \"" + buffer + "\"");
     return buffer;
 }
 
@@ -110,18 +104,16 @@ void InterProcessCom::writeInformations(const std::string &infos, int fd)
 void InterProcessCom::printOutput(std::string const &toPrint)
 {
     std::lock_guard<std::mutex> lock(mutex);
-    std::cout<< toPrint << std::endl;
+    std::cout << toPrint << std::endl;
 }
 
 void InterProcessCom::writeToKitchenBuffer(const std::string &infos)
 {
-    printOutput("buffer \"" + infos + "\" written to Kitchen");
     this->writeInformations(infos, this->kitchenFdWrite_);
 }
 
 void InterProcessCom::writeToReceptionBuffer(const std::string &infos)
 {
-    printOutput("buffer \"" + infos + "\" written to Reception");
     this->writeInformations(infos, this->receptionFdWrite_);
 }
 
