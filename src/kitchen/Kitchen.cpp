@@ -84,6 +84,7 @@ void Kitchen::pipeComunication()
             PizzaInf inf = _pipeCom.unpackPizzaInf(buffer);
             newPizza(inf.type, inf.size);
         }
+        buffer.clear();
     }
 }
 
@@ -115,6 +116,7 @@ void Kitchen::newPizza(PizzaType type, PizzaSize size)
         [&](auto const &obj_creator) { return obj_creator.first == type; });
 
     if (iter == food_creators.end()) {
+        this->_pipeCom.writeToReceptionBuffer("KO");
     } else {
         std::unique_ptr<IFood> foodPtr = iter->second(size);
         std::vector<Ingredients> ingredients = foodPtr.get()->getIngredients();

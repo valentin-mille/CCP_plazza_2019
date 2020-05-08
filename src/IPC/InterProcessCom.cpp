@@ -97,6 +97,7 @@ void InterProcessCom::writeInformations(const std::string &infos, int fd)
 
     finalStr += infos + "\n";
     // Send the size of the data and data
+
     write(fd, finalStr.c_str(), finalStr.size());
     // release the locked mutex automatically at the end of the scope
 }
