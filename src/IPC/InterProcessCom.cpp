@@ -16,6 +16,7 @@
 #include "InterProcessCom.hpp"
 
 std::mutex mutex;
+std::mutex debug_mutex;
 
 InterProcessCom::InterProcessCom()
 {
@@ -24,6 +25,10 @@ InterProcessCom::InterProcessCom()
 
 InterProcessCom::~InterProcessCom()
 {
+    close(this->receptionFdRead_);
+    close(this->kitchenFdRead_);
+    close(this->receptionFdWrite_);
+    close(this->kitchenFdWrite_);
 }
 
 int InterProcessCom::createPipe()
@@ -104,7 +109,7 @@ void InterProcessCom::writeInformations(const std::string &infos, int fd)
 
 void InterProcessCom::printOutput(std::string const &toPrint)
 {
-    std::lock_guard<std::mutex> lock(mutex);
+    std::lock_guard<std::mutex> lock(debug_mutex);
     std::cout << toPrint << std::endl;
 }
 
