@@ -8,6 +8,7 @@
 #include "Reception.hpp"
 #include "InterProcessCom.hpp"
 #include <cstdlib>
+#include <ostream>
 #include <string>
 
 // [TODO] delete this line before delivery
@@ -28,6 +29,20 @@ Reception::~Reception()
     for (size_t i = 0; i < nbProcess; ++i) {
         streamCom_[i].writeToKitchenBuffer("exit");
     }
+}
+
+template <typename T>
+T operator>>(T& left, T& packedOrder)
+{
+    left = InterProcessCom::pack(packedOrder);
+    return(left);
+}
+
+template <typename T>
+T operator<<(T& left, T& order)
+{
+    left = InterProcessCom::unpack(order);
+    return(left);
 }
 
 void Reception::FillQueueOrder(std::vector<std::string> const &OrdersVect)
@@ -173,7 +188,8 @@ int Reception::sendPizzasToKitchens()
     std::string serializedOrder;
 
     checkKitchensProcessus();
-    serializedOrder = InterProcessCom::pack(currentPizza);
+
+    serializedOrder >> currentPizza;
     while (nbPizzas > 0) {
         if (streamCom_.empty() == false) {
             for (size_t i = 0; i < streamCom_.size(); ++i) {

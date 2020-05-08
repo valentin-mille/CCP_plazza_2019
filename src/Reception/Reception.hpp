@@ -57,4 +57,10 @@ class Reception
     bool shellActive_;
 };
 
+template <typename T>
+T operator>>(T& left, T& right);
+
+template <typename T>
+T operator<<(T& left, T& right);
+
 #endif /* !RECEPTION_HPP */

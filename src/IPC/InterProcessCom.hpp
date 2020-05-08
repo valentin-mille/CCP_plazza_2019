@@ -42,8 +42,6 @@ class InterProcessCom {
         static std::string unpack(std::string const &order);
         void printOutput(std::string const &toPrint);
         static PizzaInf unpackPizzaInf(std::string const &order);
-        std::string operator<<(std::string const &order);
-        std::string operator>>(std::string const &order);
 
     private:
         int kitchenFdWrite_;

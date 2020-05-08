@@ -43,6 +43,20 @@ Kitchen::Kitchen(float multiplier,
         std::thread([this]() { this->pipeComunication(); }));
 }
 
+template <typename T>
+T operator>>(T& left, T& packedOrder)
+{
+    left = InterProcessCom::pack(packedOrder);
+    return(left);
+}
+
+template <typename T>
+T operator<<(T& left, T& order)
+{
+    left = InterProcessCom::unpack(order);
+    return(left);
+}
+
 void Kitchen::kitchenStatus()
 {
     std::vector<Cook> const &cooks = _threadPool.getCooks();

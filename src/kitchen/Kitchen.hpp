@@ -12,6 +12,7 @@
 #include <mutex>
 #include <thread>
 #include <vector>
+#include <string>
 
 #include "Americana.hpp"
 #include "Fantasia.hpp"
@@ -55,3 +56,9 @@ class Kitchen
             InterProcessCom &pipeCom);
     ~Kitchen();
 };
+
+template <typename T>
+T operator>>(T& left, T& right);
+
+template <typename T>
+T operator<<(T& left, T& right);
