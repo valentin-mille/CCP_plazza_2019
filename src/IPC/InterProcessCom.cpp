@@ -7,8 +7,8 @@
 
 #include <algorithm>
 #include <cstdio>
+#include <cstring>
 #include <iostream>
-#include <mutex>
 #include <stdio.h>
 #include <string>
 #include <unistd.h>
@@ -24,6 +24,10 @@ InterProcessCom::InterProcessCom()
 
 InterProcessCom::~InterProcessCom()
 {
+    close(kitchenFdRead_);
+    close(kitchenFdWrite_);
+    close(receptionFdRead_);
+    close(receptionFdWrite_);
 }
 
 int InterProcessCom::createPipe()
@@ -32,11 +36,13 @@ int InterProcessCom::createPipe()
     int pfdsKitchen[2];
 
     if (pipe(pfdsReception) == -1) {
-        std::cerr << "==> Reception pipe fatal error" << std::endl;
+        std::cerr << "==> Reception pipe fatal error:" << strerror(errno)
+                  << std::endl;
         return 1;
     }
     if (pipe(pfdsKitchen) == -1) {
-        std::cerr << "==> Kitchen pipe fatal error" << std::endl;
+        std::cerr << "==> Kitchen pipe fatal error: " << strerror(errno)
+                  << std::endl;
         return 1;
     }
     this->receptionFdRead_ = pfdsReception[0];
@@ -52,7 +58,7 @@ std::string InterProcessCom::readInformations(int fd)
     bool process = true;
     char buf[BUFFER_SIZE + 1];
     char *end = NULL;
-    std::string finalStrSize;
+    std::string finalStr;
     char *finder = 0;
     size_t i = 0;
 
@@ -63,12 +69,11 @@ std::string InterProcessCom::readInformations(int fd)
         finder = std::find(buf, end, '\n');
         if (finder != std::end(buf)) {
             while (buf[i] != '\n') {
-                finalStrSize += buf[i];
+                finalStr += buf[i];
                 ++i;
             }
-            return finalStrSize;
+            return finalStr;
         }
-        finalStrSize += buf;
     }
     return "";
 }
@@ -85,7 +90,6 @@ std::string InterProcessCom::readKitchenBuffer()
 {
     std::lock_guard<std::mutex> lock(mutex);
     std::string buffer = this->readInformations(this->kitchenFdRead_);
-
     return buffer;
 }
 
@@ -93,9 +97,7 @@ void InterProcessCom::writeInformations(const std::string &infos, int fd)
 {
     // Lock the program if a mutex is already blocked
     std::lock_guard<std::mutex> lock(mutex);
-    std::string finalStr;
-
-    finalStr += infos + "\n";
+    std::string finalStr = infos + "\n";
     // Send the size of the data and data
 
     write(fd, finalStr.c_str(), finalStr.size());

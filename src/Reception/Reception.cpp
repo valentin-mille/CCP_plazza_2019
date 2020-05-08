@@ -11,9 +11,6 @@
 #include <cstdlib>
 #include <string>
 
-// [TODO] delete this line before delivery
-InterProcessCom debug;
-
 Reception::Reception(float multiplier, int nbOfCooks, int deliveryTime)
     : multiplier_(multiplier),
       nbOfCooks_(nbOfCooks),
@@ -24,9 +21,9 @@ Reception::Reception(float multiplier, int nbOfCooks, int deliveryTime)
 
 Reception::~Reception()
 {
-    size_t nbProcess = streamCom_.size();
+    std::size_t nbProcess = streamCom_.size();
 
-    for (size_t i = 0; i < nbProcess; ++i) {
+    for (std::size_t i = 0; i < nbProcess; ++i) {
         streamCom_[i].writeToKitchenBuffer("exit");
         Process::waitResponse(kitchensPid_[i]);
     }
@@ -44,7 +41,6 @@ void Reception::parseOrder(std::string const &order)
 {
     std::vector<std::string> OrdersVect;
     std::string tmp;
-    InterProcessCom process;
 
     if (order.empty() || order == " ") {
         std::cerr << "Error: Invalid Order" << std::endl;
@@ -130,7 +126,6 @@ int Reception::createNewKitchenProcess(const std::string &currentPizza,
             multiplier_, nbOfCooks_, deliveryTime_, currentStream);
         newKitchen.get()->update();
         newKitchen.reset();
-        // Exit to close the child process and destroy the kitchen
         exit(EXIT_SUCCESS);
     } else if (pid > 0) {
         streamCom_.emplace_back(currentStream);
@@ -173,25 +168,31 @@ int Reception::sendPizzasToKitchens()
     std::string serializedOrder;
 
     checkKitchensProcessus();
-    serializedOrder = InterProcessCom::pack(currentPizza);
-    while (nbPizzas > 0) {
-        if (streamCom_.empty() == false) {
-            for (size_t i = 0; i < streamCom_.size(); ++i) {
-                while (infos == "OK" && nbPizzas > 0) {
-                    streamCom_[i].writeToKitchenBuffer(serializedOrder);
-                    infos = streamCom_[i].readReceptionBuffer();
-                    if (infos == "OK" && nbPizzas > 0) {
-                        --nbPizzas;
+    while (pizzas_.empty() == false) {
+        infos = "OK";
+        serializedOrder = InterProcessCom::pack(currentPizza);
+        while (nbPizzas > 0) {
+            if (streamCom_.empty() == false) {
+                for (size_t i = 0; i < streamCom_.size(); ++i) {
+                    while (infos == "OK" && nbPizzas > 0) {
+                        streamCom_[i].writeToKitchenBuffer(serializedOrder);
+                        infos = streamCom_[i].readReceptionBuffer();
+                        if (infos == "OK" && nbPizzas > 0) {
+                            --nbPizzas;
+                        }
                     }
                 }
             }
-        }
-        if (nbPizzas > 0) {
-            if (createNewKitchenProcess(serializedOrder, nbPizzas)) {
-                return 1;
+            if (nbPizzas > 0) {
+                if (createNewKitchenProcess(serializedOrder, nbPizzas)) {
+                    return 1;
+                }
             }
         }
+        pizzas_.pop();
+        currentPizza = pizzas_.front();
+        nbPizzas = getNumberOfPizza(currentPizza);
+        pizzaTypeSize = getPizzaTypeSize(currentPizza);
     }
-    pizzas_.pop();
     return 0;
 }
